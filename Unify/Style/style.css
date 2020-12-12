@@ -1,0 +1,280 @@
+@import "./reset.css";
+@import "./animations.css";
+body,
+html {
+    overflow: hidden;
+}
+
+.site {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: 10vh 90vh;
+    grid-template-columns: 100vw;
+    grid-template-areas: "head" "content";
+    background-image: url("../Imgs/background.jpg");
+    background-position: center center;
+    background-size: cover;
+    font-family: "SF";
+    z-index: 1;
+}
+
+.head {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: 1fr;
+    grid-template-areas: "hl hr";
+    grid-area: head;
+    font-weight: 600;
+}
+
+.head-left {
+    grid-area: hl;
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: 1fr;
+    grid-template-areas: "logo cp-name";
+}
+
+.logo_wrapp {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    grid-area: logo;
+}
+
+.logo {
+    height: 100%;
+    width: 60px;
+    background-image: url("../Imgs/logo.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.comp_name_wrapp {
+    padding: 0 0 0 15px;
+    grid-area: cp-name;
+    display: flex;
+    align-self: center;
+}
+
+.comp_name {
+    letter-spacing: 1.5px;
+    font-size: 27px;
+}
+
+.head-right {
+    grid-area: hr;
+}
+
+.navbar {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar>span {
+    align-self: center;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.content {
+    font-size: 50px;
+    line-height: 80px;
+    font-weight: 600;
+    grid-area: content;
+    width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: 0.3fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "bars" "intro-w";
+}
+
+.bars_wrapp {
+    grid-area: bars;
+}
+
+.bars {
+    margin: 0 auto;
+    width: 256px;
+    height: 100%;
+    background-image: url("../Imgs/bars.gif");
+    background-repeat: no-repeat;
+}
+
+.intro_wrapp {
+    grid-area: intro-w;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.intro {
+    text-align: center;
+    bottom: 100px;
+    animation-name: intro-in;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+
+
+/*LOGIN*/
+
+.login_panel,
+.signup_panel {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    clip-path: circle(0px at 72% 5vh);
+    transition: 0.5s all ease-out;
+    background-image: url("../Imgs/background.jpg");
+    background-position: center center;
+    background-size: cover;
+}
+
+.login_panel_open {
+    clip-path: circle(2048px at 72% 5vh);
+}
+
+.login_butt_up,
+.sign_butt_up {
+    z-index: 2;
+}
+
+.login_wrapp,
+.signup_wrapp {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_form,
+.signup_form {
+    background-color: white;
+    width: 380px;
+    height: 620px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form_head {
+    height: 130px;
+}
+
+.form_welcome {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    color: #333;
+}
+
+.form_logo {
+    margin: 20px 0;
+    display: block;
+    height: 50px;
+    background-image: url("../Imgs/logo.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.login_input_fields,
+.signup_input_fields {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.login_input_fields input,
+.signup_input_fields input {
+    margin: 20px 0;
+}
+
+.isnotreg {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#login_username,
+#login_password,
+#signup_username,
+#signup_password,
+#signup_email {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    outline: none;
+}
+
+#login_username::placeholder,
+#login_password::placeholder {
+    font-weight: bold;
+}
+
+#login_submit,
+#signup_submit {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    background-color: #fb3a50;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-radius: 22px;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.isnotreg,
+.alrdreg {
+    color: #fb3a50;
+    font-size: 13px;
+}
+
+
+/*SIGNUP*/
+
+.signup_panel {
+    clip-path: circle(0px at 77% 5vh);
+}
+
+.signup_panel_open {
+    clip-path: circle(2048px at 77% 5vh);
+}
+
+.gender {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.age_wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+input[type="date"] {
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    width: 150px;
+    border: none;
+    outline: none;
+    box-shadow: -1px 2px 5px grey, 1px -1px 5px grey;
+}
+
+input[type="date"]::-webkit-inner-spin-button {
+    display: none;
+}
