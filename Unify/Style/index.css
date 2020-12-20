@@ -82,34 +82,21 @@ html {
 }
 
 .content {
-    font-size: 50px;
+    font-size: 40px;
     line-height: 80px;
     font-weight: 600;
     grid-area: content;
     width: 960px;
     margin: 0 auto;
-    display: grid;
-    grid-template-rows: 0.3fr 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas: "bars" "intro-w";
-}
-
-.bars_wrapp {
-    grid-area: bars;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .bars {
-    margin: 0 auto;
     width: 256px;
-    height: 100%;
-    background-image: url("../Imgs/bars.gif");
-    background-repeat: no-repeat;
-}
-
-.intro_wrapp {
-    grid-area: intro-w;
-    margin: 0 auto;
-    height: 100%;
+    height: 256px;
+    background: url("../Imgs/bars.gif") center/cover no-repeat;
 }
 
 .intro {
@@ -277,4 +264,18 @@ input[type="date"] {
 
 input[type="date"]::-webkit-inner-spin-button {
     display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        width: 50vw;
+    }
+    .bars {
+        margin-top: 50px;
+        width: 246px;
+        min-height: 100px;
+    }
+    .intro {
+        font-size: 25px;
+    }
 }
