@@ -24,7 +24,24 @@
                 }
                 echo "\n]\n}";
                 break;
-            
+            case 'album':
+                $rows = $db -> prepare("SELECT album.name as album, artist.name as artist
+                                        FROM alb_art
+                                        JOIN album ON(alb_art.album_id = album.id)
+                                        JOIN artist ON(alb_art.artist_id = artist.id);");
+                $rows -> execute();
+                $result = $rows->fetchAll();
+                echo  "{\n\"albums\":[\n";
+                    for($i = 0; $i < $rows -> rowCount(); $i++){
+                        echo "{\"album\":\"".$result[$i]['album']."\",
+                                \n\"artist\":\"".$result[$i]['artist']."\"
+                        }";
+                        if($i != $rows -> rowCount() - 1){
+                            echo ",\n";
+                        }
+                    }
+                    echo "\n]\n}";
+                break;
         }
     }catch (PDOException $e){
         echo 'connection failed: ' . $e->getMessage();
