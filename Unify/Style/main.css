@@ -8,7 +8,7 @@
         position: relative;
         z-index: 1;
         display: grid;
-        grid-template-columns: 260px 1fr;
+        grid-template-columns: 290px 1fr;
         grid-template-rows: 56px calc(100vh - 56px);
         grid-template-areas: "side_menu media" "side_menu content";
         font-family: "SF";
@@ -86,6 +86,7 @@
         width: 100%;
         display: flex;
         flex-direction: column;
+        margin: 5px 0;
     }
     
     .section {
@@ -100,7 +101,7 @@
         text-transform: uppercase;
         height: 25px;
         line-height: 25px;
-        font-size: 11px;
+        font-size: 12px;
         display: inline-block;
     }
     
@@ -139,7 +140,7 @@
     .artists_btn,
     .albums_btn,
     .songs_btn {
-        font-size: 14px;
+        font-size: 16px;
         color: white;
     }
     
@@ -468,10 +469,25 @@
     }
     
     .song_illustration {
+        position: relative;
         width: 36px;
         height: 36px;
         margin-right: 10px;
         cursor: pointer;
+    }
+    
+    .song_illustration::before {
+        display: none;
+        content: "";
+        position: absolute;
+        height: 36px;
+        width: 36px;
+        background: url("../Imgs/play_over.png") center/28px no-repeat;
+    }
+    
+    .song_illustration:hover::before {
+        display: initial;
+        background-color: rgba(0, 0, 0, 0.5);
     }
     
     @media screen and (max-width: 768px) {

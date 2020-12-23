@@ -25,10 +25,10 @@ $(".songs_btn").click(function() {
             var $wrapper = $('<div>', { 'class': 'row_song' });
             var $songname = $('<div>', {
                 'class': 'row_song_songname',
-                'prepend': $('<img>', {
+                'prepend': $('<div>', {
                     'class': 'song_illustration',
-                    'src': './unify_media/' + item.artist + '/' + item.album + '/cover.jpg',
-                }).click(prova),
+                    // 'css': 'background,
+                }).click(prova).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" }),
                 'append': item.name,
             });
             $songname.appendTo($wrapper);
