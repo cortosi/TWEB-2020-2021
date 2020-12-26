@@ -8,3 +8,12 @@
         opacity: 1;
     }
 }
+
+@keyframes playlist_in {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

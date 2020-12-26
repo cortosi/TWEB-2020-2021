@@ -42,6 +42,22 @@
                     }
                     echo "\n]\n}";
                 break;
+                
+            case 'playlist':
+                    $rows = $db -> prepare("SELECT name
+                                            FROM playlist;");
+                    $rows -> execute();
+                    $result = $rows->fetchAll();
+                    echo  "{\n\"playlists\":[\n";
+                        for($i = 0; $i < $rows -> rowCount(); $i++){
+                            echo "{\"name\":\"".$result[$i]['name']."\"
+                            }";
+                            if($i != $rows -> rowCount() - 1){
+                                echo ",\n";
+                            }
+                        }
+                        echo "\n]\n}";
+                    break;
         }
     }catch (PDOException $e){
         echo 'connection failed: ' . $e->getMessage();

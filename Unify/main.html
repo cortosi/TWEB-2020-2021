@@ -12,7 +12,7 @@
 <body>
     <div class="main">
         <div class="side_menu">
-            <div class="side_logo">
+            <div class="side_head">
                 <div class="logo"></div>
                 <span class="comp_name">Unify</span>
             </div>
@@ -22,7 +22,7 @@
                     <input class="search_input" type="search" name="" id="" placeholder="Search">
                 </div>
             </div>
-            <div class="section library">
+            <div class="side_section library">
                 <span class="section_name">Library</span>
                 <div class="section_list library_list">
                     <div class="section_item recently">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="section playlists">
+            <div class="side_section playlists">
                 <span class="section_name">Playlists</span>
                 <div class="section_list playlists_list">
                     <!-- <div class="section_item playlist">
@@ -77,14 +77,20 @@
                             <p class="actual_artist_album"></p>
                         </div>
                         <div class="actual_song_bar no_song"></div>
-                        <audio class="actual_song">
-                            <source src="#" type="audio/mp3">
-                        </audio>
                     </div>
                 </div>
             </div>
             <div class="controls_wrapp">
                 <div class="controls">
+                    <div class="queue_wrapp">
+                        <div class="queue_icon"></div>
+                        <div class="queue_list no_queue_list">
+                            <!-- <div class="queue_item">
+                                <div class="queue_item_ill"></div>
+                                <div class="queue_item_name">xefwxfxe</div>
+                            </div> -->
+                        </div>
+                    </div>
                     <div class="volume_control_wrapp">
                         <span class="volume_icon"></span>
                         <input class="volume_slider" type="range" name="" id="">
@@ -108,11 +114,28 @@
                 <div class="column_header_time">
                     <p>Time</p>
                 </div>
-            </div> -->
-            <!-- <div class="loaded">
+            </div>
+            <div class="loaded">
                 <div class="row_song">
                     <div class="row_song_songname">
-                        <img class="song_illustration" src="Imgs/illustration.jpg"> Hey Brother
+                        <div class="song_illustration"> </div>
+                        <div class="songname"> hey brother </div>
+                        <div class="song_opt">
+                            <div class="song_opt_menu visible_list">
+                                <div class="song_opt_menu_item add_queue_item">
+                                    Add to queue
+                                    <div class="song_opt_menu_item_icon"></div>
+                                </div>
+                                <div class="song_opt_menu_item add_playlist_item">
+                                    Add to playlist
+                                    <div class="song_opt_menu_playlist_wrapp">
+                                        <div class="song_opt_menu_playlist_wrapp_item">
+                                            ciao
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row_song_songartist">
                         Avicii
@@ -123,7 +146,7 @@
                     <div class="row_song_songtime">
                         12:20
                     </div>
-                </div> 
+                </div>
             </div> -->
             <!-- <div class="loaded">
                 <div class="all_album_wrapp">
@@ -136,57 +159,12 @@
                             <p>Avicii</p>
                         </div>
                     </div>
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-
-                        </div>
-                    </div>
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-
-                        </div>
-                    </div>
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-
-                        </div>
-                    </div>
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-
-                        </div>
-                    </div>
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-
-                        </div>
-                    </div>
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-                            
-                        </div>
-                    </div>
-
                 </div>
             </div> -->
+        </div>
+        <div class="add_playlist_check_wrapp">
+            <div class="add_playlist_check">
+            </div>
         </div>
     </div>
 </body>
