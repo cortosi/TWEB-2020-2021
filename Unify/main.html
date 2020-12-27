@@ -46,10 +46,10 @@
             <div class="side_section playlists">
                 <span class="section_name">Playlists</span>
                 <div class="section_list playlists_list">
-                    <!-- <div class="section_item playlist">
-                        <span class="section_icon"></span>
-                        <span class="recently_btn">Recently Added</span>
-                    </div> -->
+                    <div class="section_item playlist_item">
+                        <span class="section_icon playlist_icon"></span>
+                        <span class="recently_btn">Chill</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,9 +82,9 @@
             </div>
             <div class="controls_wrapp">
                 <div class="controls">
-                    <div class="queue_wrapp">
+                    <div class="queue_icon_wrapp">
                         <div class="queue_icon"></div>
-                        <div class="queue_list no_queue_list">
+                        <div class="queue_list no_queued_items">
                             <!-- <div class="queue_item">
                                 <div class="queue_item_ill"></div>
                                 <div class="queue_item_name">xefwxfxe</div>
@@ -100,67 +100,24 @@
                 </div>
             </div>
         </div>
-        <div class="content">
-            <!-- <div class="library_header">
-                <div class="column_header_name">
-                    <p>Name</p>
+        <div class="content"></div>
+        <div class="create_playlist_wrapp">
+            <div class="create_playlist">
+                <div class="create_playlist_head">
+                    <p>New Plalylist</p>
                 </div>
-                <div class="column_header_artist">
-                    <p>Artist</p>
+                <div class="create_playlist_input_wrapp">
+                    <input id='pl_input' class="create_playlist_input" type="text" value="New Playlist" autocomplete="off">
                 </div>
-                <div class="column_header_album">
-                    <p>Album</p>
-                </div>
-                <div class="column_header_time">
-                    <p>Time</p>
+                <div class="create_playlist_submit_wrapp">
+                    <div class="create_playlist_submit">
+                        Create
+                    </div>
                 </div>
             </div>
-            <div class="loaded">
-                <div class="row_song">
-                    <div class="row_song_songname">
-                        <div class="song_illustration"> </div>
-                        <div class="songname"> hey brother </div>
-                        <div class="song_opt">
-                            <div class="song_opt_menu visible_list">
-                                <div class="song_opt_menu_item add_queue_item">
-                                    Add to queue
-                                    <div class="song_opt_menu_item_icon"></div>
-                                </div>
-                                <div class="song_opt_menu_item add_playlist_item">
-                                    Add to playlist
-                                    <div class="song_opt_menu_playlist_wrapp">
-                                        <div class="song_opt_menu_playlist_wrapp_item">
-                                            ciao
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row_song_songartist">
-                        Avicii
-                    </div>
-                    <div class="row_song_songalbum">
-                        IDK
-                    </div>
-                    <div class="row_song_songtime">
-                        12:20
-                    </div>
-                </div>
-            </div> -->
-            <!-- <div class="loaded">
-                <div class="all_album_wrapp">
-                    <div class="album">
-                        <div class="album_ill">
-
-                        </div>
-                        <div class="album_det">
-                            <p>Hey Brother - Single</p>
-                            <p>Avicii</p>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            <div class=error_input_wrapp>
+                Playlist Already Exist
+            </div>
         </div>
         <div class="add_playlist_check_wrapp">
             <div class="add_playlist_check">

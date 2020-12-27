@@ -2,99 +2,71 @@ var song = new Audio();
 var queue = [];
 var currentSong = 0;
 var lastsong;
+var valid_input = false;
 
-function playlist_check() {
-    $(".add_playlist_check_wrapp").addClass("playlist_add_checked");
-    setTimeout(function() {
-        $(".add_playlist_check_wrapp").removeClass("playlist_add_checked");
-    }, 2000);
-};
 
 $(document).ready(function() {
-    $(".queue_list").hide();
+    fillPlaylist();
 });
 
 $(document).click(function(e) {
-    // console.log(e.target);
+    console.log(e.target);
+    // console.log(e);
     if (!$(e.target).is(".queue_icon")) {
-        $(".queue_list").hide();
+        $(".queue_list").removeClass("show_flex")
         $(".queue_list").empty();
     }
-    if (!$(e.target).is(".song_opt")) {
-        $(".song_opt_menu").hide();
+    if (!$(e.target).is(".song_opt_dots")) {
+        $(".song_opt_main").hide();
     }
 });
 
 $(".songs_btn").click(function() {
     $(".content").empty();
-    var $wrapper = $('<div>', { 'class': 'library_header' });
-    $('<div>', {
-        'class': 'column_header_name',
-        'html': 'Name',
-    }).appendTo($wrapper);
-    $('<div>', {
-        'class': 'column_header_artist',
-        'html': 'Artist',
-    }).appendTo($wrapper);
-    $('<div>', {
-        'class': 'column_header_album',
-        'html': 'Album',
-    }).appendTo($wrapper);
-    $('<div>', {
-        'class': 'column_header_time',
-        'html': 'Lenght',
-    }).appendTo($wrapper);
-    $wrapper.appendTo(".content");
-    $('<div>', {
-        'class': 'loaded',
-    }).appendTo(".content").addClass("songs_layout");
+    var $library_header = $('<div>', { 'class': 'library_header' }).appendTo(".content");
+    $('<div>', { 'class': 'column_header_name', 'html': 'Name' }).appendTo($library_header);
+    $('<div>', { 'class': 'column_header_artist', 'html': 'Artist' }).appendTo($library_header);
+    $('<div>', { 'class': 'column_header_album', 'html': 'Album' }).appendTo($library_header);
+    $('<div>', { 'class': 'column_header_time', 'html': 'Lenght' }).appendTo($library_header);
+    $('<div>', { 'class': 'loaded' }).addClass("songs_layout").appendTo(".content");
     $.getJSON("./php/ajax_requests.php", "type=songs", function(json) {
         json.songs.forEach(function(item) {
-            var $wrapper = $('<div>', { 'class': 'row_song' });
+            var $single_row_song = $('<div>', { 'class': 'row_song' });
             var $songname = $('<div>', {
                 'class': 'row_song_songname',
                 'prepend': $('<div>', {
                     'class': 'song_illustration',
                 }).click(play_this).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" }),
+                'append': $('<div>', {
+                    'class': 'songname',
+                    'html': item.name,
+                })
             })
             $('<div>', {
-                'class': 'songname',
-                'html': item.name,
-            }).appendTo($songname);
-            $('<div>', {
-                'class': 'song_opt',
+                'class': 'song_opt_dots',
                 'html': $('<div>', {
-                    'class': 'song_opt_menu',
+                    'class': 'song_opt_main',
                     'html': $('<div>', {
-                        'class': 'song_opt_menu_item add_queue_item',
+                        'class': 'song_opt_item add_queue_item',
                         'html': 'Add to queue',
                         'append': $('<div>', {
-                            'class': 'song_opt_menu_item_icon add_queue_icon',
+                            'class': 'song_opt_item_icon add_queue_icon',
                         })
                     }).click(add_queue),
                     'append': $('<div>', {
-                        'class': 'song_opt_menu_item add_playlist_item',
+                        'class': 'song_opt_item add_playlist_item',
                         'html': 'Add to playlist',
                         'append': $('<div>', {
-                            'class': 'song_opt_menu_playlist_wrapp'
-                        }).click(playlist_check)
+                            'class': 'song_opt_playlist_main'
+                        })
                     }).hover(show_playlist)
                 })
             }).click(opt_menu).appendTo($songname);
-            $songname.appendTo($wrapper);
-            $('<div>', {
-                'class': 'row_song_songartist',
-                'html': item.artist,
-            }).appendTo($wrapper);
-            $('<div>', {
-                'class': 'row_song_songalbum',
-                'html': item.album,
-            }).appendTo($wrapper);
-            $('<div>', {
-                'class': 'row_song_songtime',
-                'html': item.lenght,
-            }).appendTo($wrapper);
-            $wrapper.appendTo(".loaded");
+            $songname.appendTo($single_row_song);
+            $('<div>', { 'class': 'row_song_songartist', 'html': item.artist }).appendTo($single_row_song);
+            $('<div>', { 'class': 'row_song_songalbum', 'html': item.album }).appendTo($single_row_song);
+            $('<div>', { 'class': 'row_song_songtime', 'html': item.lenght }).appendTo($single_row_song);
+            $single_row_song.appendTo(".loaded");
         });
     });
 });
@@ -105,12 +77,10 @@ $(".artists_btn").click(function() {
 
 $(".albums_btn").click(function() {
     $(".content").empty();
-    var $wrapper = $('<div>', {
-        'class': 'loaded album_layout',
-    }).appendTo(".content");
+    var $wrapper = $('<div>', { 'class': 'loaded album_layout' }).appendTo(".content");
     $.getJSON("./php/ajax_requests.php", "type=album", function(json) {
         json.albums.forEach(function(item) {
-            var $album = $('<div>', {
+            var $single_album_window = $('<div>', {
                 'class': 'album',
                 'prepend': $('<div>', {
                     'class': 'album_ill',
@@ -127,11 +97,12 @@ $(".albums_btn").click(function() {
                 'append': $('<div>', {
                     'class': 'album_det',
                     'html': $('<p>', {
-                        'html': item.album,
+                        'html': item.album
                     }),
-                }).append($('<p>', {
-                    'html': item.artist,
-                }))
+                    'append': $('<p>', {
+                        'html': item.artist
+                    })
+                })
             }).appendTo($wrapper);
         });
     });
@@ -142,12 +113,12 @@ $(".recently_btn").click(function() {
     $(".content").empty();
 });
 
-$(".queue_wrapp").click(function() {
-    $wrapper = $(".queue_list").empty().toggle();
+$(".queue_icon").click(function() {
+    $list = $(".queue_list").empty().toggleClass("show_flex");
     if (queue.length > 0) {
-        $wrapper.removeClass('no_queue_list');
+        $list.removeClass('no_queued_items');
         for ($i = 0; $i < queue.length; $i++) {
-            $wrapper.append($('<div>', {
+            $list.append($('<div>', {
                 'class': 'queue_item',
                 'html': $('<div>', {
                     'class': 'queue_item_ill',
@@ -158,48 +129,25 @@ $(".queue_wrapp").click(function() {
                 })
             }))
         }
-        $wrapper.append($('<div>', {
+        $list.append($('<div>', {
             'class': 'queue_reset_btn',
             'html': 'Reset Queue'
-        }))
+        }).click(reset_queue));
     } else {
-        $wrapper.append($('<div>', {
+        $list.append($('<div>', {
             'html': "There are no songs in the queue."
         }));
     }
 });
 
+function reset_queue() {
+    $(".queue_list").addClass("no_queued_items");
+    queue = [];
+}
 
 
 function opt_menu() {
     $(this).children(1).show();
-};
-
-function show_playlist() {
-    $list = $(this).children(1);
-    $list.empty().append($('<div>', {
-        'class': 'song_opt_menu_playlist_wrapp_item',
-        'html': 'Create New',
-        'append': $('<div>', {
-            'class': '.song_opt_menu_playlist_wrapp_item_icon'
-        }).addClass("song_opt_menu_playlist_wrapp_item_icon").click(create_playlist)
-    })).click(create_playlist);
-    $.getJSON("./php/ajax_requests.php", "type=playlist", function(json) {
-        json.playlists.forEach(function(item) {
-            $list.append($('<div>', {
-                'class': 'song_opt_menu_playlist_wrapp_item',
-                'html': item.name
-            })).click(add_to_playlist);
-        });
-    });
-};
-
-function add_to_playlist() {
-
-};
-
-function create_playlist() {
-
 };
 
 function add_queue() {
@@ -211,9 +159,152 @@ function add_queue() {
         'artist': $songartist,
         'album': $songalbum
     });
-    console.log(queue);
+    currentSong++;
+};
+
+// Playlists
+
+function fillPlaylist() {
+    $.ajax({
+        type: "GET",
+        url: "./php/ajax_requests.php",
+        data: "type=playlist",
+        dataType: "json",
+        success: function(json) {
+            $wrapper = $('.playlists_list');
+            json.playlists.forEach(function(item) {
+                $('<div>', {
+                    'class': 'section_item playlist_item',
+                    'prepend': $('<span>', {
+                        'class': 'section_icon playlist_icon',
+                    }),
+                    'append': $('<div>', {
+                        'class': 'playlist_item_name',
+                        'html': item.name
+                    })
+                }).appendTo($wrapper);
+            });
+        }
+    });
+};
+
+function show_playlist() {
+    $list = $(this).children(1);
+    $list.empty().append($('<div>', {
+        'class': 'song_opt_item new_pl',
+        'html': 'Create New',
+        'append': $('<div>', {
+            'class': 'song_opt_playlist_create_icon'
+        })
+    }).click(create_playlist));
+    $.getJSON("./php/ajax_requests.php", "type=playlist", function(json) {
+        json.playlists.forEach(function(item) {
+            $list.append($('<div>', {
+                'class': 'song_opt_item alrd_ex_pls',
+                'html': item.name
+            }).click(add_to_playlist));
+        });
+    });
+};
+
+function playlist_check() {
+    $(".add_playlist_check_wrapp").addClass("playlist_add_checked");
+    setTimeout(function() {
+        $(".add_playlist_check_wrapp").removeClass("playlist_add_checked");
+    }, 2000);
+};
+
+function add_to_playlist() {
+    $.get("./php/ajax_requests.php", "type=check_song_into_pl&pl_name=" + $(this).text() +
+        "&name=" + $(this).parents(".row_song_songname ").children(".songname ").text(),
+        function(data, textStatus, jqXHR) {
+            if (data === 'SONG_EXIST') {
+
+            } else {
+
+            }
+        },
+        "text"
+    );
+};
+
+function create_playlist() {
+    $('.create_playlist_wrapp').fadeIn().css("display", "flex");
+};
+
+$(".create_playlist_wrapp").click(function(e) {
+    if (!($(e.target).is(".create_playlist_wrapp"))) {
+
+    } else {
+        $(this).fadeOut();
+    }
+});
+
+function check_valid_pl_name(sync_val) {
+    $.ajax({
+        asyn: sync_val,
+        type: "GET",
+        url: "./php/ajax_requests.php",
+        data: 'type=check_pl_exist&new_pl_text=' + $('#pl_input').val(),
+        dataType: "json",
+        success: function(json) {
+            if (json.playlists.length == 0) {
+                $('.error_input_wrapp').removeClass('visible');
+                $('.create_playlist_input').removeClass("wrong_input");
+                valid_input = true;
+            } else {
+                $('.create_playlist_input').addClass("wrong_input");
+                $('.error_input_wrapp').addClass('visible');
+                valid_input = false;
+            }
+        }
+    });
 }
 
+$('.create_playlist_input').keyup(function() {
+    check_valid_pl_name(true);
+});
+
+$('.create_playlist_submit').click(function() {
+    check_valid_pl_name(false);
+    if (valid_input) {
+        $.ajax({
+            type: "GET",
+            url: "./php/ajax_requests.php",
+            data: 'type=new_pl&name=' + $('#pl_input').val(),
+            dataType: "text",
+            success: function(response) {
+                if (response === "ok") {
+                    $('.create_playlist_wrapp').fadeOut();
+                } else {
+                    $('.create_playlist_input').addClass("wrong_input");
+                    $('.error_input_wrapp').addClass('visible');
+                }
+            }
+        });
+    }
+})
+
+function show_this_pl() {
+
+}
+
+function check_remotely_exist(url) {
+    $flag = 0;
+    $.ajax({
+        async: false,
+        type: "HEAD",
+        url: url,
+        success: function(response) {
+            $flag = 1;
+        }
+    });
+    if ($flag == 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //PLAYBACK HANDLING
 
@@ -256,28 +347,18 @@ $(".volume_slider").change(function() {
     song.volume = parseFloat(this.value / 100);
 });
 
-function check_remotely_exist(url) {
-    $flag = 0;
-    $.ajax({
-        async: false,
-        type: "HEAD",
-        url: url,
-        success: function(response) {
-            $flag = 1;
-        }
-    });
-    if ($flag == 1) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 $(".playback_next_btn").click(function() {
-    play_pause;
-    if (queue.lenght != currentSong) {
-        currentSong++;
-        song.src = queue[currentSong];
-        play_pause;
+    play_pause();
+    if (queue.length > 0) {
+        song.src = "./unify_media/" + queue[0].artist +
+            "/" + queue[0].album + "/" + queue[0].name + ".mp3";
+        $(".actual_song_name").text(queue[0].name);
+        $(".actual_artist_album").text(queue[0].artist + " -- " + queue[0].album);
+        $(".miniplayer_img").removeClass("no_artwork").css({
+            "background": "url('./unify_media/" + queue[0].artist +
+                "/" + queue[0].album + "/cover.jpg') center/cover"
+        });
+        queue.splice(0);
+        play_pause();
     }
 });
