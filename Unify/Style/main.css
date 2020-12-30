@@ -358,6 +358,52 @@
     background: url("../Imgs/volume.png") center/cover;
 }
 
+.user_and_settings {
+    cursor: pointer;
+    position: relative;
+    background: url("../Imgs/user_icon.png") center/contain no-repeat;
+    height: 35px;
+    width: 35px;
+}
+
+.user_settings_wrapp {
+    display: flex;
+    flex-direction: column;
+    display: none;
+    height: auto;
+    width: 100px;
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    border-radius: 7px;
+    background-color: #646468;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.logout_btn {
+    border: none;
+    background-color: #646468;
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: 0.1s all ease-in;
+}
+
+.user_settings_username {
+    padding: 10px;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.logout_btn:hover {
+    color: #bb1a04;
+}
+
 
 /* VOLUME SLIDER http://danielstern.ca/range.css/?ref=css-tricks#/ */
 
@@ -883,3 +929,113 @@ input[type=range]:focus::-ms-fill-upper {
 .hide {
     display: none;
 }
+
+.playlist_head_wrapp {
+    height: 20%;
+}
+
+.playlist_head {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 10% 1fr;
+    grid-template-areas: "pl_img pl_infos";
+    color: white;
+}
+
+.pl_img {
+    align-self: center;
+    justify-self: center;
+    height: 120px;
+    width: 120px;
+}
+
+.pl_infos {
+    align-self: center;
+    justify-self: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pl_name {
+    height: 60%;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+}
+
+.other_pl_infos {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 13px;
+}
+
+.playlist_content {
+    height: calc(100vh - 56px - 182px);
+}
+
+.single_album_layout {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+    grid-template-areas: "single_album_ill_wrapp single_album_det";
+    height: 100%;
+}
+
+.single_album_ill {
+    height: 350px;
+    width: 350px;
+    margin: 50px auto;
+}
+
+.single_album_det_wrapp {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.single_album_det {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 150px;
+    border-bottom: 1px solid #4d4d4d;
+    margin-top: 40px;
+}
+
+.single_album_name {
+    color: white;
+    font-size: 26px;
+}
+
+.single_album_artist {
+    color: #9c1a09;
+    font-size: 22px;
+}
+
+.single_album_genre {
+    color: #4d4d4d;
+}
+
+.single_album_play_btn {
+    height: 30px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #9c1a09;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.single_album_songs {
+    height: calc(100% - 190px)
+}
+
+
+/* VARIABILI CSS USARE */

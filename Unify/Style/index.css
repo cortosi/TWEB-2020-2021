@@ -3,27 +3,24 @@
 body,
 html {
     overflow: hidden;
+    font-family: "SF";
+    color: white;
 }
 
 .site {
     height: 100vh;
     width: 100vw;
     display: grid;
-    overflow: hidden;
     grid-template-rows: 10vh 90vh;
     grid-template-columns: 100vw;
     grid-template-areas: "head" "content";
-    background-image: url("../Imgs/background.jpg");
-    background-position: center center;
-    background-size: cover;
-    font-family: "SF";
+    background: url("../Imgs/index_background.jpg") center/cover;
     z-index: 1;
 }
 
 .head {
     display: grid;
     grid-template-columns: repeat(2, 50%);
-    grid-template-rows: 1fr;
     grid-template-areas: "hl hr";
     grid-area: head;
     font-weight: 600;
@@ -33,36 +30,32 @@ html {
     grid-area: hl;
     display: grid;
     grid-template-columns: repeat(2, 50%);
-    grid-template-rows: 1fr;
     grid-template-areas: "logo cp-name";
 }
 
 .logo_wrapp {
+    grid-area: logo;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    grid-area: logo;
 }
 
 .logo {
     height: 100%;
     width: 60px;
-    background-image: url("../Imgs/logo.png");
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background: url("../Imgs/logo.png") center/contain no-repeat;
 }
 
 .comp_name_wrapp {
-    padding: 0 0 0 15px;
     grid-area: cp-name;
+    padding-left: 15px;
     display: flex;
     align-self: center;
 }
 
 .comp_name {
     letter-spacing: 1.5px;
-    font-size: 27px;
+    font-size: 30px;
 }
 
 .head-right {
@@ -73,20 +66,18 @@ html {
     height: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .navbar>span {
-    align-self: center;
     margin-left: 15px;
     cursor: pointer;
 }
 
 .content {
-    font-size: 40px;
-    line-height: 80px;
-    font-weight: 600;
     grid-area: content;
-    width: 960px;
+    font-weight: 600;
+    width: 50%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -100,10 +91,11 @@ html {
 }
 
 .intro {
+    font-size: 40px;
     text-align: center;
     bottom: 100px;
     animation-name: intro-in;
-    animation-duration: 2s;
+    animation-duration: 3s;
     animation-fill-mode: forwards;
 }
 
@@ -115,11 +107,9 @@ html {
     height: 100vh;
     width: 100vw;
     position: absolute;
-    clip-path: circle(0px at 72% 5vh);
+    clip-path: circle(0px at 73% 7vh);
     transition: 0.5s all ease-out;
-    background-image: url("../Imgs/background.jpg");
-    background-position: center center;
-    background-size: cover;
+    background: url("../Imgs/index_background.jpg") center/cover;
 }
 
 .login_panel_open {
@@ -166,10 +156,7 @@ html {
     margin: 20px 0;
     display: block;
     height: 50px;
-    background-image: url("../Imgs/logo.png");
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
+    background: url("../Imgs/logo.png") center/contain no-repeat;
 }
 
 .login_input_fields,
@@ -179,16 +166,8 @@ html {
     flex-direction: column;
 }
 
-.login_input_fields input,
-.signup_input_fields input {
+.login_input_fields input {
     margin: 20px 0;
-}
-
-.isnotreg {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    cursor: pointer;
 }
 
 #login_username,
@@ -196,41 +175,46 @@ html {
 #signup_username,
 #signup_password,
 #signup_email {
+    padding: 10px;
     border-top: 0;
     border-left: 0;
     border-right: 0;
+    font-size: 14px;
     outline: none;
 }
 
 #login_username::placeholder,
 #login_password::placeholder {
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 #login_submit,
 #signup_submit {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 400;
     letter-spacing: 2px;
-    background-color: #fb3a50;
-    padding-left: 22px;
-    padding-right: 22px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    background-color: #a81e1e;
+    padding: 10px;
     border-radius: 22px;
     border: none;
+    outline: none;
     cursor: pointer;
     color: white;
 }
 
 .isnotreg,
 .alrdreg {
-    color: #fb3a50;
+    color: #a81e1e;
     font-size: 13px;
 }
 
 
 /*SIGNUP*/
+
+.signup_form {
+    height: 700px;
+}
 
 .signup_panel {
     clip-path: circle(0px at 77% 5vh);
@@ -240,30 +224,61 @@ html {
     clip-path: circle(2048px at 77% 5vh);
 }
 
+.signup_input_fields input {
+    margin: 15px 0;
+}
+
 .gender {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    color: black;
 }
 
 .age_wrapp {
+    color: black;
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
 
-input[type="date"] {
-    font-weight: bold;
+.login_error,
+.signup_error {
+    transition: 1s all ease;
+    opacity: 0;
+    pointer-events: none;
     text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    border: none;
-    outline: none;
-    box-shadow: -1px 2px 5px grey, 1px -1px 5px grey;
+    font-size: 13px;
+    color: red;
 }
 
-input[type="date"]::-webkit-inner-spin-button {
-    display: none;
+.error_show {
+    opacity: 1;
+    height: 20px;
+}
+
+input[type="radio"] {
+    transition: 0.2s all ease;
+    outline: none;
+    /* remove standard background appearance */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* create custom radiobutton appearance */
+    width: 20px;
+    height: 20px;
+    /* background-color only for content */
+    border: 2px solid black;
+    background-clip: content-box;
+    background-color: #333;
+    border-radius: 50%;
+}
+
+
+/* appearance for checked radiobutton */
+
+input[type="radio"]:checked {
+    background-color: #a81e1e;
 }
 
 @media screen and (max-width: 768px) {

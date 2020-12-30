@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="./Style/style.css"> -->
     <link rel="stylesheet" href="./Style/index.css">
     <link rel="stylesheet" href="./Style/fonts.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -34,14 +33,15 @@
         </div>
         <div class="login_panel">
             <div class="login_wrapp">
-                <form class="login_form" action="#">
+                <form class="login_form" action="javascript:void(0);">
                     <div class="form_head">
                         <span class="form_welcome">Welcome</span>
                         <div class="form_logo"></div>
                     </div>
                     <div class="login_input_fields">
-                        <input id="login_username" autocomplete="new-user" type="text" placeholder="Username">
-                        <input id="login_password" type="password" placeholder="Password">
+                        <input id="login_username" name="username" autocomplete="new-user" type="text" placeholder="Username">
+                        <input id="login_password" name="password" type="password" placeholder="Password">
+                        <div class="login_error">Wrong Password</div>
                         <input id="login_submit" type="submit" value="LOGIN">
                     </div>
                     <div class="isnotreg">
@@ -52,31 +52,28 @@
         </div>
         <div class="signup_panel">
             <div class="signup_wrapp">
-                <form class="signup_form" action="#">
+                <div class="signup_form" action="#">
                     <div class="form_head">
                         <span class="form_welcome">Welcome</span>
                         <div class="form_logo"></div>
                     </div>
-                    <div class="signup_input_fields">
-                        <input id="signup_email" autocomplete="new-email" type="email" name="" placeholder="E-mail">
-                        <input id="signup_username" autocomplete="new-user" type="text" placeholder="Username">
-                        <input id="signup_password" type="password" placeholder="Password">
+                    <form class="signup_input_fields" action="javascript:void(0);">
+                        <input id="signup_email" autocomplete="off" type="email" name="" placeholder="E-mail" required>
+                        <input id="signup_username" autocomplete="new-user" type="text" placeholder="Username" required>
+                        <input id="signup_password" type="password" placeholder="Password" required>
                         <div class="gender">
                             <label for="gender_m">Male</label>
-                            <input id="gender_m" type="radio" name="gender" value="f">
+                            <input type="radio" name="gender" value="M">
                             <label for="gender_f">Female</label>
-                            <input id="gender_f" type="radio" name="gender" value="m">
+                            <input type="radio" name="gender" value="F">
                         </div>
-                        <div class="age_wrapp">
-                            <label for="signup_age">Age</label>
-                            <input id="signup_age" type="date" name="age">
-                        </div>
+                        <div class="signup_error">Wrong Password</div>
                         <input id="signup_submit" type="submit" value="SIGN UP">
-                    </div>
+                    </form>
                     <div class="alrdreg">
                         <p>Already registered? Log-in</p>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

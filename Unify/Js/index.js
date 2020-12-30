@@ -13,3 +13,45 @@ $(".sign_butt").click(function() {
         return $(".sign_butt").text() == "Back" ? "Sign-Up" : "Back";
     });
 });
+
+$('.login_form').submit(function() {
+    $.get("./php/login.php", 'username=' + $('#login_username').val() +
+        "&password=" + $('#login_password').val(),
+        function(data, textStatus, jqXHR) {
+            switch (data) {
+                case 'PSW_ERR':
+                    $('.login_error').addClass('error_show').text("Wrong Password");
+                    break;
+                case 'USR_ERR':
+                    $('.login_error').addClass('error_show').text("User doesn't exist");
+                    break;
+                case 'LOGGED':
+                    window.location = "./main.php";
+                    break;
+            }
+        },
+        "text"
+    );
+})
+
+$('.signup_input_fields').submit(function() {
+    $.get("./php/signup.php", 'username=' + $('#signup_username').val() +
+        "&email=" + $('#signup_email').val() +
+        "&password=" + $('#signup_password').val() +
+        "&gender=" + $(".signup_input_fields input[type='radio']:checked").val(),
+        function(data, textStatus, jqXHR) {
+            switch (data) {
+                case 'USERNAME_EXIST':
+                    $('.signup_error').addClass('error_show').text("Username Already Exist");
+                    break;
+                case 'EMAIL_EXIST':
+                    $('.signup_error').addClass('error_show').text("Email already used");
+                    break;
+                case 'REGISTERED':
+                    window.location = "./php/signup_success.php";
+                    break;
+            }
+        },
+        "text"
+    );
+})
