@@ -109,7 +109,13 @@
             </div>
         </div>
         <div class="content">
-            
+            <div class="loaded artists_layout">
+                <div class="artists_side">
+                    <div class="artist_row">
+                        <div class="artist_icon"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="create_playlist_wrapp">
             <div class="create_playlist">

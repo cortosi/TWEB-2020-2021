@@ -751,6 +751,37 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 
+/* ARTISTS LAYOUT */
+
+.artists_layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: "side art_content";
+    height: calc(100vh - 56px);
+}
+
+.artists_side {
+    grid-area: side;
+    border-right: 0.5px solid #4d4d4d;
+    overflow-y: scroll;
+}
+
+.artist_row {
+    padding: 0 10px;
+    height: 60px;
+    border: 1px solid red;
+    display: flex;
+    align-items: center;
+}
+
+.artist_icon {
+    border-radius: 50%;
+    border: 1px solid red;
+    width: 50px;
+    height: 50px;
+}
+
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 768px) {
