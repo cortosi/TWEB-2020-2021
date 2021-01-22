@@ -49,8 +49,21 @@ switch ($_GET['type']) {
         $result = $rows->fetchAll();
         echo  "{\n\"playlists\":[\n";
         for ($i = 0; $i < $rows->rowCount(); $i++) {
-            echo "{\"name\":\"" . $result[$i]['name'] . "\"
-                        }";
+            echo "{\"name\":\"" . $result[$i]['name'] . "\"}";
+            if ($i != $rows->rowCount() - 1) {
+                echo ",\n";
+            }
+        }
+        echo "\n]\n}";
+        break;
+    case 'artists':
+        $rows = $db->prepare("SELECT name
+                                        FROM artist;");
+        $rows->execute();
+        $result = $rows->fetchAll();
+        echo  "{\n\"artists\":[\n";
+        for ($i = 0; $i < $rows->rowCount(); $i++) {
+            echo "{\"name\":\"" . $result[$i]['name'] . "\"}";
             if ($i != $rows->rowCount() - 1) {
                 echo ",\n";
             }

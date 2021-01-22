@@ -76,6 +76,29 @@ $(".songs_btn").click(function() {
 
 $(".artists_btn").click(function() {
     $(".content").empty();
+    var $wrapper = $('<div>', { 'class': 'loaded artists_layout' }).appendTo(".content");
+    $.getJSON("./php/ajax_requests.php", "type=artists",
+        function(json, textStatus, jqXHR) {
+            if (Object.keys(json).length > 0) {
+                var $side = $('<div>', { 'class': 'artists_side' }).appendTo($wrapper);
+                var $art_content = $('<div>', { 'class': 'art_content' }).appendTo($wrapper);
+                json.artists.forEach(function(item) {
+                    $single_art_row = $('<div>', {
+                        'class': 'artist_row',
+                        'prepend': $('<div>', {
+                            'class': 'artist_icon',
+                        }).css({ "background": "url(\"./unify_media/" + item.name + "/artist.jpg\") center/cover" }),
+                        'append': $('<div>', {
+                            'class': 'artist_artist_name',
+                            'html': item.name
+                        }),
+                    }).appendTo($side);
+                });
+            } else {
+
+            }
+        }
+    );
 });
 
 $(".albums_btn").click(function() {
@@ -248,6 +271,13 @@ function play_album($songalbum, $songartist) {
             play_next();
         }
     );
+}
+
+//ARTISTS
+
+
+function show_this_artist() {
+
 }
 
 // Playlists

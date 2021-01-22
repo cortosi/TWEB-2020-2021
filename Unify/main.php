@@ -111,8 +111,11 @@
         <div class="content">
             <div class="loaded artists_layout">
                 <div class="artists_side">
-                    <div class="artist_row">
+                <div class="artist_row">
                         <div class="artist_icon"></div>
+                        <div class="artist_artist_name">
+                            Coldplay
+                        </div>
                     </div>
                 </div>
             </div>
