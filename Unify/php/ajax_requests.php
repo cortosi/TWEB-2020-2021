@@ -66,8 +66,12 @@ switch ($_GET['type']) {
         echo "\n]\n}";
         break;
     case 'playlist':
-        $rows = $db->prepare("SELECT pl_name FROM playlists
-                              WHERE playlists.user = '$_GET[username]';");
+        if ($_GET['username'] == 'admin') {
+            $rows = $db->prepare("SELECT pl_name FROM playlists;");
+        } else {
+            $rows = $db->prepare("SELECT pl_name FROM playlists
+                                    WHERE playlists.user = '$_GET[username]';");
+        }
         $rows->execute();
         $result = $rows->fetchAll();
         echo  "{\n\"playlists\":[\n";
@@ -113,7 +117,7 @@ switch ($_GET['type']) {
     case 'check_pl_exist':
         $rows = $db->prepare("SELECT pl_name
                                     FROM playlists
-                                    WHERE user = '$_GET[username] AND 'pl_name='$_GET[new_pl_text]';");
+                                    WHERE playlists.user = '$_GET[username]' AND playlists.pl_name='$_GET[new_pl_text]';");
         $rows->execute();
         $result = $rows->fetchAll();
         echo  "{\n\"playlists\":[\n";
@@ -133,7 +137,18 @@ switch ($_GET['type']) {
         echo "ok";
         break;
     case 'songs_into_pl':
-        $rows = $db->prepare("SELECT songs.name as name, artists.name as artist, albums.name as album 
+        if ($_GET['username'] == 'admin') {
+            $rows = $db->prepare("SELECT songs.name as name, artists.name as artist, albums.name as album 
+                                FROM playlists
+                                JOIN playlists_songs ON(playlists.pl_name = playlists_songs.pl_name)
+                                JOIN songs ON(playlists_songs.song_id = songs.id)
+                                JOIN songs_albums ON(songs_albums.song_id = songs.id)
+                                JOIN albums ON(songs_albums.album_id = albums.id)
+                                JOIN artists_albums ON(artists_albums.album_id = albums.id)
+                                JOIN artists ON(artists_albums.artist_name = artists.name)
+                                WHERE playlists.pl_name = '$_GET[pl_name]';");
+        } else {
+            $rows = $db->prepare("SELECT songs.name as name, artists.name as artist, albums.name as album 
                                 FROM playlists
                                 JOIN playlists_songs ON(playlists.pl_name = playlists_songs.pl_name)
                                 JOIN songs ON(playlists_songs.song_id = songs.id)
@@ -142,6 +157,7 @@ switch ($_GET['type']) {
                                 JOIN artists_albums ON(artists_albums.album_id = albums.id)
                                 JOIN artists ON(artists_albums.artist_name = artists.name)
                                 WHERE playlists.user = '$_GET[username]' AND playlists.pl_name = '$_GET[pl_name]';");
+        }
         $rows->execute();
         $result = $rows->fetchAll();
         echo  "{\n\"songs\":[\n";
@@ -184,7 +200,7 @@ switch ($_GET['type']) {
         echo  "{\n\"songs\":[\n";
         for ($i = 0; $i < $rows->rowCount(); $i++) {
             echo "{\"name\":\"" . $result[$i]['name'] . "\",
-                    \n\"lenght\":\"" . $result[$i]['length'] . "\"
+                    \n\"length\":\"" . $result[$i]['length'] . "\"
                     }";
             if ($i != $rows->rowCount() - 1) {
                 echo ",\n";
@@ -193,17 +209,28 @@ switch ($_GET['type']) {
         echo "\n]\n}";
         break;
     case 'album_artist_per_user':
-        $rows = $db->prepare("SELECT albums.name as album, albums.genre as genre, songs.name as songname
+        if ($_GET['username'] == 'admin') {
+            $rows = $db->prepare("SELECT albums.name as album, albums.genre as genre, songs.name as songname
+                                    FROM artists 
+                                    JOIN artists_albums ON(artists_albums.artist_name = artists.name)
+                                    JOIN songs_albums ON(songs_albums.album_id = artists_albums.album_id)
+                                    JOIN albums ON(albums.id = songs_albums.album_id)
+                                    JOIN songs ON(songs.id = songs_albums.song_id)
+                                    WHERE artists.name = '$_GET[artist]'");
+        } else {
+            $rows = $db->prepare("SELECT albums.name as album, albums.genre as genre, songs.name as songname
                                 FROM songs
                                 JOIN user_songs ON(user_songs.song_id = songs.id)
                                 JOIN songs_albums ON(songs_albums.song_id = user_songs.song_id)
                                 JOIN albums ON(albums.id = songs_albums.album_id)
                                 JOIN artists_albums ON(albums.id = artists_albums.album_id)
                                 WHERE user_songs.username = '$_GET[username]' AND artists_albums.artist_name = '$_GET[artist]'");
+        }
         $rows->execute();
         $result = $rows->fetchAll();
         $lastalb = $result[0]['album'];
         echo  "{\n\"albums\":[\n{\"albumname\":\"" . $result[0]['album'] . "\",\n
+            \"genre\":\"" . $result[0]['genre'] . "\",\n
             \"songs\": [\n
             {\"songname\":\"" . $result[0]['songname'] . "\"}";
         for ($i = 1; $i < $rows->rowCount(); $i++) {
@@ -212,6 +239,7 @@ switch ($_GET['type']) {
             } else {
                 $lastalb = $result[$i]['album'];
                 echo "]},\n{\"albumname\":\"" . $result[$i]['album'] . "\",\n
+                    \"genre\": \"" . $result[$i]['genre'] . "\",\n
                     \"songs\": [\n";
                 echo "{\"songname\":\"" . $result[$i]['songname'] . "\"}";
             }

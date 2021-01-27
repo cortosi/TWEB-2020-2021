@@ -555,15 +555,28 @@ input[type=range]:focus::-ms-fill-upper {
     grid-template-areas: "songname songartist songalbum songtime";
 }
 
-.row_song:nth-of-type(even) {
+.album_row_song {
+    display: grid;
+    grid-template-columns: 40px repeat(2, calc((100% - 20px)/ 2));
+    padding: 0 10px;
+    height: 45px;
+    border-top: 0.5px solid #4d4d4d;
+    grid-template-areas: "songnumber songname songtime";
+    cursor: pointer;
+}
+
+.row_song:nth-of-type(even),
+.album_row_song:nth-of-type(even) {
     background-color: #2c2c2c;
 }
 
-.row_song:first-of-type {
+.row_song:first-of-type,
+.album_row_song:first-of-type {
     border-top: none;
 }
 
-.row_song:last-of-type {
+.row_song:last-of-type,
+.album_row_song:last-of-type {
     border-bottom: 0.5px solid #4d4d4d;
 }
 
@@ -582,11 +595,21 @@ input[type=range]:focus::-ms-fill-upper {
 .row_song_songname,
 .row_song_songartist,
 .row_song_songalbum,
-.row_song_songtime {
+.row_song_songtime,
+.row_song_songnumber {
     display: flex;
     align-items: center;
     color: white;
     font-size: 13px;
+}
+
+.row_song_songnumber {
+    justify-content: center;
+}
+
+.album_row_song:hover .row_song_songnumber {
+    font-size: 0px;
+    background: url("../Imgs/play_over.png") center/25px no-repeat;
 }
 
 .song_illustration {
@@ -689,12 +712,16 @@ input[type=range]:focus::-ms-fill-upper {
     border-radius: 0px 5px 5px 5px;
 }
 
+.playlist_layout {
+    padding: 0 25px;
+}
+
 
 /* ALBUM LAYOUT */
 
 .album_layout {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, minmax(245px, 1fr));
     grid-template-rows: auto 1fr;
     padding: 20px 20px;
     grid-gap: 20px;
@@ -1027,6 +1054,7 @@ input[type=range]:focus::-ms-fill-upper {
     grid-template-columns: 10% 1fr;
     grid-template-areas: "pl_img pl_infos";
     color: white;
+    border-bottom: 0.5px solid #4d4d4d;
 }
 
 .pl_img {
@@ -1064,26 +1092,31 @@ input[type=range]:focus::-ms-fill-upper {
 
 .playlist_content {
     height: calc(100vh - 56px - 182px);
-    padding: 0 25px;
 }
 
 .single_album_layout {
     display: grid;
-    grid-template-columns: 30% 1fr;
+    grid-template-columns: 25% 1fr;
     grid-template-areas: "single_album_ill_wrapp single_album_det";
     height: 100%;
+}
+
+.single_album_ill_wrapp {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
 }
 
 .single_album_ill {
     height: 350px;
     width: 350px;
-    margin: 50px auto;
 }
 
 .single_album_det_wrapp {
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 0 50px;
 }
 
 .single_album_det {
@@ -1123,7 +1156,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .single_album_songs {
-    height: calc(100% - 190px)
+    height: calc(100% - 190px);
 }
 
 

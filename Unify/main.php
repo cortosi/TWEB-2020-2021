@@ -109,37 +109,7 @@ if (isset($_SESSION['username'])) {
                 </div>
             </div>
             <div class="content">
-                <div class="loaded artists_layout">
-                    <div class="artists_side">
-                        <div class="artist_row">
-                            <div class="artist_icon"></div>
-                            <div class="artist_artist_name">
-                                Coldplay
-                            </div>
-                        </div>
-                    </div>
-                    <div class="artist_content">
-                        <div class="artist_album_row">
-                            <div class="artist_album_ill"></div>
-                            <div class="artist_album_det">
-                                <div class="single_album_det">
-                                    <div class="single_album_name">Living Things</div>
-                                    <div class="single_album_genre">Pop ~ 2011</div>
-                                    <div class="single_album_play_btn">Play</div>
-                                </div>
-                                <div class="artist_album_songs songs_layout">
-                                    <div class="row_song">
-                                        <div class="row_song_songname">
-                                            <div class="songname">A Head Full Of Dreams</div>
-                                        </div>
-                                        <div class="row_song_songartist">Coldplay</div>
-                                        <div class="row_song_songtime">00:03:43</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div class="create_playlist_wrapp">
                 <div class="create_playlist">
