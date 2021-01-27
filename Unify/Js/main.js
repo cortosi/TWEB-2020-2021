@@ -3,6 +3,7 @@ var queue = [];
 var currentSong = 0;
 var lastsong;
 var valid_input = false;
+var username = $.trim($('.user_settings_username').text());
 
 $(".user_and_settings").click(function() {
     $(".user_settings_wrapp").toggle();
@@ -32,7 +33,7 @@ $(".songs_btn").click(function() {
     $('<div>', { 'class': 'column_header_album', 'html': 'Album' }).appendTo($library_header);
     $('<div>', { 'class': 'column_header_time', 'html': 'Lenght' }).appendTo($library_header);
     $('<div>', { 'class': 'loaded' }).addClass("songs_layout").appendTo(".content");
-    $.getJSON("./php/ajax_requests.php", "type=songs", function(json) {
+    $.getJSON("./php/ajax_requests.php", "type=songs&username=" + username, function(json) {
         json.songs.forEach(function(item) {
             var $single_row_song = $('<div>', { 'class': 'row_song' });
             var $songname = $('<div>', {
@@ -68,7 +69,7 @@ $(".songs_btn").click(function() {
             $songname.appendTo($single_row_song);
             $('<div>', { 'class': 'row_song_songartist', 'html': item.artist }).appendTo($single_row_song);
             $('<div>', { 'class': 'row_song_songalbum', 'html': item.album }).appendTo($single_row_song);
-            $('<div>', { 'class': 'row_song_songtime', 'html': item.lenght }).appendTo($single_row_song);
+            $('<div>', { 'class': 'row_song_songtime', 'html': item.length }).appendTo($single_row_song);
             $single_row_song.appendTo(".loaded");
         });
     });
@@ -77,11 +78,11 @@ $(".songs_btn").click(function() {
 $(".artists_btn").click(function() {
     $(".content").empty();
     var $wrapper = $('<div>', { 'class': 'loaded artists_layout' }).appendTo(".content");
-    $.getJSON("./php/ajax_requests.php", "type=artists",
+    $.getJSON("./php/ajax_requests.php", "type=artists&username=" + username,
         function(json, textStatus, jqXHR) {
             if (Object.keys(json).length > 0) {
                 var $side = $('<div>', { 'class': 'artists_side' }).appendTo($wrapper);
-                var $art_content = $('<div>', { 'class': 'art_content' }).appendTo($wrapper);
+                var $art_content = $('<div>', { 'class': 'artist_content' }).appendTo($wrapper);
                 json.artists.forEach(function(item) {
                     $single_art_row = $('<div>', {
                         'class': 'artist_row',
@@ -92,7 +93,7 @@ $(".artists_btn").click(function() {
                             'class': 'artist_artist_name',
                             'html': item.name
                         }),
-                    }).appendTo($side);
+                    }).appendTo($side).click(show_this_artist);
                 });
             } else {
 
@@ -101,10 +102,58 @@ $(".artists_btn").click(function() {
     );
 });
 
+function show_this_artist() {
+    $('.artist_content').empty();
+    $art_name = $(this).children('.artist_artist_name').text();
+    $.getJSON("./php/ajax_requests.php", "username=" + username + "&artist=" + $art_name + "&type=album_artist_per_user",
+        function(json, textStatus, jqXHR) {
+            json.albums.forEach(function(item) {
+                $album = $('<div>', {
+                    'class': 'artist_album_row',
+                    'prepend': $('<div>', {
+                        'class': 'artist_album_ill'
+                    }).css({ "background": "url(\"./unify_media/" + $art_name + "/" + item.albumname + "/cover.jpg\") center/cover" })
+                });
+                $album_det = $('<div>', { 'class': 'artist_album_det' }).appendTo($album);
+                $('<div>', {
+                    'class': 'single_album_det',
+                    'html': $('<div>', {
+                        'class': 'single_album_genre',
+                        'html': $art_name
+                    }),
+                    'prepend': $('<div>', {
+                        'class': 'single_album_name',
+                        'html': item.albumname
+                    }),
+                    'append': $('<div>', {
+                        'class': 'single_album_play_btn',
+                        'html': "Play"
+                    })
+                }).appendTo($album_det);
+                $songs = $('<div>', { 'class': 'artist_album_songs songs_layout' }).appendTo($album_det);
+                item.songs.forEach(function(songs) {
+                    var $single_row_song = $('<div>', {
+                        'class': 'row_song',
+                        'append': $('<div>', {
+                            'class': 'row_song_songname',
+                            'prepend': $('<div>', {
+                                'class': 'songname',
+                                'html': songs.songname,
+                            })
+                        })
+                    })
+                    $('<div>', { 'class': 'row_song_songtime', 'html': item.length }).appendTo($single_row_song);
+                    $single_row_song.appendTo($songs);
+                });
+                $album.appendTo('.artist_content');
+            });
+        });
+}
+
 $(".albums_btn").click(function() {
     $(".content").empty();
     var $wrapper = $('<div>', { 'class': 'loaded album_layout' }).appendTo(".content");
-    $.getJSON("./php/ajax_requests.php", "type=album", function(json) {
+    $.getJSON("./php/ajax_requests.php", "type=album&username=" + username, function(json) {
         json.albums.forEach(function(item) {
             var $single_album_window = $('<div>', {
                 'class': 'album',
@@ -166,6 +215,7 @@ $(".queue_icon").click(function() {
             'html': 'Reset Queue'
         }).click(reset_queue));
     } else {
+        $list.addClass('no_queued_items');
         $list.append($('<div>', {
             'html': "There are no songs in the queue."
         }));
@@ -232,7 +282,7 @@ function show_album() {
         })
         .appendTo($w1.children(".single_album_det"));
     var $wrapper = $('<div>', { 'class': 'single_album_songs songs_layout' });
-    $.getJSON("./php/ajax_requests.php", "type=album_songs&name=" + $alb_name,
+    $.getJSON("./php/ajax_requests.php", "type=album_songs&album=" + $alb_name,
         function(json, textStatus, jqXHR) {
             json.songs.forEach(function(item) {
                 var $single_row_song = $('<div>', {
@@ -259,7 +309,7 @@ function show_album() {
 function play_album($songalbum, $songartist) {
     play_pause();
     reset_queue();
-    $.getJSON("./php/ajax_requests.php", "type=album_songs&name=" + $songalbum,
+    $.getJSON("./php/ajax_requests.php", "type=album_songs&album=" + $songalbum,
         function(json, textStatus, jqXHR) {
             json.songs.forEach(function(item) {
                 queue.push({
@@ -276,9 +326,7 @@ function play_album($songalbum, $songartist) {
 //ARTISTS
 
 
-function show_this_artist() {
 
-}
 
 // Playlists
 
@@ -287,7 +335,7 @@ function fillPlaylist() {
     $.ajax({
         type: "GET",
         url: "./php/ajax_requests.php",
-        data: "type=playlist",
+        data: "type=playlist&username=" + username,
         dataType: "json",
         success: function(json) {
             json.playlists.forEach(function(item) {
@@ -315,7 +363,7 @@ function show_playlist() {
             'class': 'song_opt_playlist_create_icon'
         })
     }).click(create_playlist));
-    $.getJSON("./php/ajax_requests.php", "type=playlist", function(json) {
+    $.getJSON("./php/ajax_requests.php", "type=playlist&username=" + username, function(json) {
         json.playlists.forEach(function(item) {
             $list.append($('<div>', {
                 'class': 'song_opt_item alrd_ex_pls',
@@ -333,7 +381,7 @@ function playlist_check() {
 };
 
 function add_to_playlist() {
-    $.get("./php/ajax_requests.php", "type=insert_into_pl&pl_name=" + $(this).text() +
+    $.get("./php/ajax_requests.php", "username=" + username + "&type=insert_into_pl&pl_name=" + $(this).text() +
         "&name=" + $(this).parents(".row_song_songname ").children(".songname ").text(),
         function(data, textStatus, jqXHR) {
             if (data == "ok") {
@@ -363,7 +411,7 @@ function check_valid_pl_name(sync_val) {
         asyn: sync_val,
         type: "GET",
         url: "./php/ajax_requests.php",
-        data: 'type=check_pl_exist&new_pl_text=' + $('#pl_input').val(),
+        data: 'username=' + username + '&type=check_pl_exist&new_pl_text=' + $('#pl_input').val(),
         dataType: "json",
         success: function(json) {
             if (json.playlists.length == 0) {
@@ -389,7 +437,7 @@ $('.create_playlist_submit').click(function() {
         $.ajax({
             type: "GET",
             url: "./php/ajax_requests.php",
-            data: 'type=new_pl&name=' + $('#pl_input').val(),
+            data: 'username=' + username + '&type=new_pl&name=' + $('#pl_input').val(),
             dataType: "text",
             success: function(response) {
                 if (response === "ok") {
@@ -441,7 +489,7 @@ function show_this_pl() {
         })
     }).appendTo('.content').append($pl_content);
     $pl_name = $(this).text();
-    $.getJSON("./php/ajax_requests.php", "type=songs_into_pl&pl_name=" + $pl_name,
+    $.getJSON("./php/ajax_requests.php", "username=" + username + "&type=songs_into_pl&pl_name=" + $pl_name,
         function(json, textStatus, jqXHR) {
             json.songs.forEach(function(item) {
                 var $single_row_song = $('<div>', { 'class': 'row_song' });
@@ -540,5 +588,7 @@ function play_next() {
         });
         queue.shift();
         play_pause();
+    } else {
+
     }
 }
