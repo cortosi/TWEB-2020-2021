@@ -115,6 +115,10 @@
     margin-right: 5px;
 }
 
+.explore .section_icon {
+    background: url("../Imgs/explore.png") center/contain no-repeat;
+}
+
 .recently .section_icon {
     background: url("../Imgs/recently.png") center/contain no-repeat;
 }
@@ -137,6 +141,7 @@
     background: url("../Imgs/playlist.png") center/cover;
 }
 
+.explore_btn,
 .recently_btn,
 .artists_btn,
 .albums_btn,
@@ -407,18 +412,18 @@
 
 /* VOLUME SLIDER http://danielstern.ca/range.css/?ref=css-tricks#/ */
 
-input[type=range] {
+input[type="range"] {
     width: 77px;
     margin: 3.5px 0;
     background-color: transparent;
     -webkit-appearance: none;
 }
 
-input[type=range]:focus {
+input[type="range"]:focus {
     outline: none;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
     background: #4c4c4c;
     border: 0;
     border-radius: 3px;
@@ -427,7 +432,7 @@ input[type=range]::-webkit-slider-runnable-track {
     cursor: pointer;
 }
 
-input[type=range]::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
     margin-top: -3.5px;
     width: 10px;
     height: 10px;
@@ -438,11 +443,11 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
 
-input[type=range]:focus::-webkit-slider-runnable-track {
+input[type="range"]:focus::-webkit-slider-runnable-track {
     background: #595959;
 }
 
-input[type=range]::-moz-range-track {
+input[type="range"]::-moz-range-track {
     background: #4c4c4c;
     border: 0;
     border-radius: 3px;
@@ -451,7 +456,7 @@ input[type=range]::-moz-range-track {
     cursor: pointer;
 }
 
-input[type=range]::-moz-range-thumb {
+input[type="range"]::-moz-range-thumb {
     width: 10px;
     height: 10px;
     background: #aaaaaa;
@@ -460,7 +465,7 @@ input[type=range]::-moz-range-thumb {
     cursor: pointer;
 }
 
-input[type=range]::-ms-track {
+input[type="range"]::-ms-track {
     background: transparent;
     border-color: transparent;
     border-width: 6.1px 0;
@@ -470,19 +475,19 @@ input[type=range]::-ms-track {
     cursor: pointer;
 }
 
-input[type=range]::-ms-fill-lower {
+input[type="range"]::-ms-fill-lower {
     background: #3f3f3f;
     border: 0;
     border-radius: 2px;
 }
 
-input[type=range]::-ms-fill-upper {
+input[type="range"]::-ms-fill-upper {
     background: #4c4c4c;
     border: 0;
     border-radius: 2px;
 }
 
-input[type=range]::-ms-thumb {
+input[type="range"]::-ms-thumb {
     width: 10px;
     height: 10px;
     background: #aaaaaa;
@@ -492,16 +497,16 @@ input[type=range]::-ms-thumb {
     margin-top: 0px;
 }
 
-input[type=range]:focus::-ms-fill-lower {
+input[type="range"]:focus::-ms-fill-lower {
     background: #4c4c4c;
 }
 
-input[type=range]:focus::-ms-fill-upper {
+input[type="range"]:focus::-ms-fill-upper {
     background: #595959;
 }
 
-@supports (-ms-ime-align:auto) {
-    input[type=range] {
+@supports (-ms-ime-align: auto) {
+    input[type="range"] {
         margin: 0;
     }
 }
@@ -516,7 +521,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .loaded {
-    height: calc(100vh - 56px - 25px);
+    height: calc(100vh - 56px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -531,12 +536,13 @@ input[type=range]:focus::-ms-fill-upper {
 .songs_layout {
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 78px);
 }
 
 .library_header,
 .row_song {
     display: grid;
-    grid-template-columns: repeat(3, calc((90%)/ 3)) 1fr;
+    grid-template-columns: repeat(3, calc((90%) / 3)) 1fr;
     padding: 0 30px;
 }
 
@@ -557,7 +563,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .album_row_song {
     display: grid;
-    grid-template-columns: 40px repeat(2, calc((100% - 20px)/ 2));
+    grid-template-columns: 40px repeat(2, calc((100% - 20px) / 2));
     padding: 0 10px;
     height: 45px;
     border-top: 0.5px solid #4d4d4d;
@@ -634,12 +640,29 @@ input[type=range]:focus::-ms-fill-upper {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.song_opt_dots {
+.song_opt_dots,
+.song_add_icon,
+.song_owned_icon {
     cursor: pointer;
     width: 30px;
     height: 10px;
     margin-left: 10px;
     background: url("../Imgs/song_opt.png") center/cover;
+}
+
+.song_add_icon {
+    background: url("../Imgs/add_song.png") center/cover;
+    width: 15px;
+    height: 15px;
+    margin-left: auto;
+}
+
+.song_owned_icon {
+    cursor: context-menu;
+    background: url("../Imgs/check.png") center/cover no-repeat;
+    width: 15px;
+    height: 15px;
+    margin-left: auto;
 }
 
 .song_opt_main {
@@ -727,12 +750,6 @@ input[type=range]:focus::-ms-fill-upper {
     grid-gap: 20px;
 }
 
-.album {
-    font-size: 12px;
-    font-weight: 400;
-    color: white;
-}
-
 .album_ill {
     position: relative;
     height: 292px;
@@ -740,7 +757,8 @@ input[type=range]:focus::-ms-fill-upper {
     background-position: center;
 }
 
-.album_ill:hover .ill_hover {
+.album_ill:hover .ill_hover,
+.explore_albums_ill:hover .explore_albums_ill_hover {
     opacity: 1;
 }
 
@@ -757,14 +775,17 @@ input[type=range]:focus::-ms-fill-upper {
     opacity: 0;
 }
 
-.ill_buttons {
+.ill_buttons,
+.explore_albums_ill_buttons {
     height: 50px;
     width: 100%;
     display: flex;
     align-items: center;
 }
 
-.ill_play_bttn {
+.ill_play_bttn,
+.explore_ill_play_bttn,
+.explore_ill_add_bttn {
     transition: 0.1s all ease-in;
     border: 1px solid white;
     border-radius: 50%;
@@ -774,7 +795,9 @@ input[type=range]:focus::-ms-fill-upper {
     background: url("../Imgs/play_over.png") center/cover;
 }
 
-.ill_play_bttn:hover {
+.ill_play_bttn:hover,
+.explore_ill_add_bttn:hover,
+.explore_ill_play_bttn:hover {
     background-color: red;
     border: 1px solid red;
 }
@@ -784,6 +807,9 @@ input[type=range]:focus::-ms-fill-upper {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    font-size: 12px;
+    font-weight: 400;
+    color: white;
 }
 
 
@@ -864,7 +890,7 @@ input[type=range]:focus::-ms-fill-upper {
     border: 1px solid yellow;
 }
 
-.artis
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 768px) {
@@ -1157,6 +1183,140 @@ input[type=range]:focus::-ms-fill-upper {
 
 .single_album_songs {
     height: calc(100% - 190px);
+}
+
+
+/* EMPTY SECTION */
+
+.empty_section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.empty_section_message {
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.empty_section_text {
+    color: white;
+}
+
+.empty_section_explore_btn {
+    color: #a81e1e;
+    cursor: pointer;
+}
+
+
+/* EXPLORE */
+
+.explore_songs,
+.explore_albums,
+.explore_artists {
+    border-top: 1px solid #3f3f3f;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.explore_layout {
+    display: grid;
+    grid-template-rows: repeat(3, calc(100% / 3));
+    grid-template-areas: "explore_albums" "explore_songs" "explore_artists";
+}
+
+.explore_section_head {
+    height: 60px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+}
+
+.explore_section_see_more {
+    font-size: 14px;
+    color: #bb1a04;
+    cursor: pointer;
+}
+
+.explore_albums_albums,
+.explore_songs_songs,
+.explore_artists_artists {
+    height: 100%;
+}
+
+.explore_albums_albums {
+    display: flex;
+}
+
+.explore_albums_item {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+.explore_albums_ill {
+    height: 170px;
+    width: 170px;
+    background: url("../unify_media/Coldplay/A\ Head\ Full\ Of\ Dreams/cover.jpg") center/cover;
+}
+
+.explore_albums_ill_hover {
+    cursor: pointer;
+    transition: 0.1s all ease-in;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    content: "";
+    position: absolute;
+    height: 170px;
+    width: 170px;
+    align-items: flex-end;
+    opacity: 0;
+}
+
+.explore_ill_play_bttn {
+    margin-left: 7px;
+    background-size: 25px;
+}
+
+.explore_ill_add_bttn {
+    background: url("../Imgs/add.png") center/20px no-repeat;
+    margin-right: 7px;
+}
+
+.explore_albums_ill_buttons {
+    justify-content: space-between;
+}
+
+.explore_songs_songs {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 20px;
+    height: 60%;
+}
+
+.explore_song {
+    height: 60px;
+    border: 1px solid red;
+}
+
+.loader {
+    border: 2px solid #bb1a04;
+    border-radius: 50%;
+    border-top: 2px solid white;
+    width: 15px;
+    height: 15px;
+    -webkit-animation: spin 2s linear infinite;
+    /* Safari */
+    animation: spin 2s linear infinite;
+    margin-left: auto;
 }
 
 

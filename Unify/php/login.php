@@ -1,23 +1,24 @@
-<?php 
-try{
+<?php
+try {
     @include "./connection.php";
-    $query = $db -> prepare("SELECT username, password
+    $username = $db->quote($_GET['username']);
+    $password = $db->quote(sha1($_GET['password']));
+    $query = $db->prepare("SELECT username, password
                       FROM users
-                      WHERE users.username='$_GET[username]';");
-    $query -> execute();
-    $results = $query -> fetchAll();
-    if($query -> rowCount() > 0){
-        if($results[0]['password'] == $_GET['password']){
+                      WHERE users.username = $username;");
+    $query->execute();
+    $results = $query->fetchAll();
+    if ($query->rowCount() > 0) {
+        if ($results[0]['password'] == trim($password, '\'')) {
             session_start();
-            $_SESSION['username'] = $_GET['username'];
+            $_SESSION['username'] = $username;
             echo "LOGGED";
-        }else{
+        } else {
             echo "PSW_ERR";
         }
-    }else{
+    } else {
         echo "USR_ERR";
     }
-}catch(Exception $e){
-    echo "error: ".$e -> getMessage();
+} catch (Exception $e) {
+    echo "error: " . $e->getMessage();
 }
-?>

@@ -29,6 +29,10 @@ if (isset($_SESSION['username'])) {
                 <div class="side_section library">
                     <span class="section_name">Library</span>
                     <div class="section_list library_list">
+                        <div class="section_item explore">
+                            <span class="section_icon"></span>
+                            <span class="explore_btn">Explore</span>
+                        </div>
                         <div class="section_item recently">
                             <span class="section_icon"></span>
                             <span class="recently_btn">Recently Added</span>
@@ -109,7 +113,7 @@ if (isset($_SESSION['username'])) {
                 </div>
             </div>
             <div class="content">
-                
+
             </div>
             <div class="create_playlist_wrapp">
                 <div class="create_playlist">
