@@ -90,18 +90,27 @@ function show_explore() {
     $.when($.getJSON("./php/ajax_requests.php", "username=" + username + "&type=explore_album",
         function(json) {
             json.albums.forEach(function(item) {
-                $single_album = $('<div>', { 'class': 'explore_albums_item' }).appendTo($wrapper);
-                $single_album_ill = $('<div>', { 'class': 'explore_albums_ill' })
-                    .css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" }).appendTo($single_album);
-                $single_album_ill_hover = $('<div>', { 'class': 'explore_albums_ill_hover' }).appendTo($single_album_ill);
-                $single_album_ill_buttons = $('<div>', { 'class': 'explore_albums_ill_buttons' }).appendTo($single_album_ill_hover);
-                $play_btn = $('<div>', { 'class': 'explore_ill_play_bttn' }).appendTo($single_album_ill_buttons);
-                if (album_already_owned(item.album) == "ADD") {
-                    $('<div>', { 'class': 'explore_ill_add_bttn' })
-                        .click(function() {
-                            add_album_to_library(item.album, this)
+                $single_album = $('<div>', {
+                    'class': 'explore_albums_item',
+                    'append': $single_album_ill = $('<div>', {
+                        'class': 'explore_albums_ill',
+                        'append': $single_album_ill_hover = $('<div>', {
+                            'class': 'explore_albums_ill_hover',
+                            'append': $single_album_ill_buttons = $('<div>', {
+                                'class': 'explore_albums_ill_buttons',
+                                'append': $play_btn = $('<div>', {
+                                    'class': 'explore_ill_play_bttn'
+                                })
+                            })
+                        }).click(function() {
+                            show_album(item.album, item.artist, "SET");
                         })
-                        .appendTo($single_album_ill_buttons);
+                    }).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" })
+                }).appendTo($wrapper);
+                if (album_already_owned(item.album) == "ADD") {
+                    $('<div>', { 'class': 'explore_ill_add_bttn' }).click(function() {
+                        add_album_to_library(item.album, this);
+                    }).appendTo($single_album_ill_buttons);
                 }
             })
         }
@@ -123,15 +132,17 @@ function show_explore() {
         $.when($.getJSON("./php/ajax_requests.php", "username=" + username + "&type=explore_songs",
             function(json) {
                 json.songs.forEach(function(item) {
-                    var $single_song = $('<div>', { 'class': 'row_song_songname' }).appendTo($wrapper);
-                    $ill = $('<div>', {
-                        'class': 'song_illustration',
-                        'prepend': $('<div>', {
+                    var $single_song = $('<div>', {
+                        'class': 'row_song_songname',
+                        'html': $ill = $('<div>', {
                             'class': 'song_illustration',
-                        }).click(function() {
-                            play_this(item.name, item.artist, item.album);
-                        }).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" })
-                    }).appendTo($single_song)
+                            'prepend': $('<div>', {
+                                'class': 'song_illustration',
+                            }).click(function() {
+                                play_this(item.name, item.artist, item.album);
+                            }).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" })
+                        })
+                    }).appendTo($wrapper);
                     $songname = $('<div>', {
                         'class': 'songname',
                         'html': item.name,
@@ -429,26 +440,24 @@ function show_album($album, $artist, $all = "NULL") {
                     }),
                 });
                 if ($all == "SET") {
-                    song_already_owned(item.name).done(function(response) {
-                        if (response != "OK") {
-                            $('<div>', {
-                                'class': 'row_song_songicon',
-                                'html': $('<div>', {
-                                    'class': 'song_owned_icon'
-                                })
-                            }).appendTo($single_row_song);
-                        } else {
-                            $('<div>', {
-                                'class': 'row_song_songicon',
-                                'html': $('<div>', {
-                                    'class': 'song_add_icon',
-                                }).click(function(e) {
-                                    e.stopPropagation();
-                                    add_song_to_library(item.name, this);
-                                })
-                            }).appendTo($single_row_song);
-                        }
-                    })
+                    if (song_already_owned(item.name) != "OK") {
+                        $('<div>', {
+                            'class': 'row_song_songicon',
+                            'html': $('<div>', {
+                                'class': 'song_owned_icon'
+                            })
+                        }).appendTo($single_row_song);
+                    } else {
+                        $('<div>', {
+                            'class': 'row_song_songicon',
+                            'html': $('<div>', {
+                                'class': 'song_add_icon',
+                            }).click(function(e) {
+                                e.stopPropagation();
+                                add_song_to_library(item.name, this);
+                            })
+                        }).appendTo($single_row_song);
+                    }
                 }
                 $single_row_song.appendTo($wrapper);
                 $i++;
@@ -660,11 +669,11 @@ function show_this_pl() {
                         'class': 'other_pl_infos',
                         'html': $('<div>', {
                             'class': 'n_songs_pl',
-                            'html': '22'
+                            'html': ''
                         }),
                         'append': $('<div>', {
                             'class': 'tot_time_pl',
-                            'html': '22'
+                            'html': ''
                         })
                     })
                 })
@@ -693,6 +702,7 @@ function show_this_pl() {
                 $('<div>', { 'class': 'row_song_songtime', 'html': item.length }).appendTo($single_row_song);
                 $single_row_song.appendTo($pl_content);
             });
+            $('.n_songs_pl').text(json.nsongs + " songs");
         }
     );
 

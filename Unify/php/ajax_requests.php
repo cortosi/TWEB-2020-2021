@@ -171,9 +171,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
                                     JOIN artists_albums ON(artists_albums.album_id = albums.id)
                                     JOIN artists ON(artists_albums.artist_name = artists.name)
                                     WHERE playlists.user = $username AND playlists.pl_name = $pl_name;");
+            $count_query = $db->prepare("SELECT COUNT(*) as nsongs
+                                                FROM playlists
+                                                JOIN playlists_songs ON(playlists.pl_name = playlists_songs.pl_name AND
+                                                                        playlists.user = playlists_songs.user)
+                                                JOIN songs ON(playlists_songs.song_id = songs.id)
+                                                JOIN songs_albums ON(songs_albums.song_id = songs.id)
+                                                JOIN albums ON(songs_albums.album_id = albums.id)
+                                                JOIN artists_albums ON(artists_albums.album_id = albums.id)
+                                                JOIN artists ON(artists_albums.artist_name = artists.name)
+                                                WHERE playlists.user = $username AND playlists.pl_name = $pl_name;");
+            $count_query->execute();
             $rows->execute();
             $result = $rows->fetchAll();
-            echo  "{\n\"songs\":[\n";
+            $nsongs = $count_query -> fetchAll();
+            echo  "{\n\"nsongs\":" . $nsongs[0]['nsongs'] . ",\n\"songs\":[\n";
             for ($i = 0; $i < $rows->rowCount(); $i++) {
                 echo "{\"name\":\"" . $result[$i]['name'] . "\",
                             \n \"artist\":\"" . $result[$i]['artist'] . "\",
