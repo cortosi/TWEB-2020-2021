@@ -210,14 +210,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
         case 'album_songs':
             $username = $db->quote($_GET['username']);
             $album = $db->quote($_GET['album']);
-            $rows = $db->prepare("SELECT S.name name, S.length as length
-                              FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
-                              JOIN albums Al ON SA.album_id=Al.id
-                              JOIN artists_albums ArAl ON Al.id=ArAl.album_id
-                              JOIN artists Ar ON ArAl.artist_name=Ar.name
-                              WHERE Al.name = $album AND S.id IN (SELECT song_id 
-                                              FROM user_songs 
-                                              WHERE user_songs.username = $username);");
+            if (isset($_GET['album_explore']) && $_GET['album_explore'] != "NULL") {
+                $rows = $db->prepare("SELECT S.name name, S.length as length
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name
+                                        WHERE Al.name = $album;");
+            } else {
+                $rows = $db->prepare("SELECT S.name name, S.length as length
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name
+                                        WHERE Al.name = $album AND S.id IN (SELECT song_id 
+                                                        FROM user_songs 
+                                                        WHERE user_songs.username = $username);");
+            }
             $rows->execute();
             $result = $rows->fetchAll();
             echo  "{\n\"songs\":[\n";
@@ -277,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             }
             break;
         case 'add_song_to_lib':
-            $username = $db->quote($_GET['username']);  
+            $username = $db->quote($_GET['username']);
             $songname = $db->quote($_GET['songname']);
             try {
                 $song_id_query = $db->prepare("SELECT songs.id FROM songs WHERE songs.name = $songname");
@@ -285,11 +294,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
                 $song_id_arr = $song_id_query->fetchAll();
                 $song_id = $song_id_arr[0]['id'];
                 $insert_query = $db->prepare("INSERT INTO user_songs (username, song_id, added) VALUES ($username, $song_id, CURRENT_TIMESTAMP);");
-                echo "INSERT INTO user_songs (username, song_id, added) VALUES ($username, $song_id, CURRENT_TIMESTAMP);";
                 $insert_query->execute();
                 echo "OK";
             } catch (Exception $e) {
                 echo "ERR" . $e->getMessage();
+            }
+            break;
+        case 'add_album_to_library':
+            $username = $db->quote($_GET['username']);
+            $album = $db->quote($_GET['album']);
+            $query = $db->prepare("SELECT S.id as id
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name
+                                        WHERE Al.name = $album;");
+            $query->execute();
+            $songs = $query->fetchAll();
+            foreach ($songs as $val) {
+                try {
+                    $insert_query = $db->prepare("INSERT INTO user_songs (username, song_id, added) VALUES ($username, $val[id], CURRENT_TIMESTAMP);");
+                    $insert_query->execute();
+                } catch (Exception $e) {
+                }
+            }
+            echo "ADDED";
+            break;
+        case 'check_owned_album':
+            $username = $db->quote($_GET['username']);
+            $album = $db->quote($_GET['album']);
+            $query1 = $db->prepare("SELECT COUNT(S.id) as n
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name
+                                        WHERE Al.name = $album AND S.id IN (SELECT song_id 
+                                                        FROM user_songs 
+                                                        WHERE user_songs.username = $username);");
+            $query1->execute();
+            $user_songs_number = $query1->fetchAll();
+            $query2 = $db->prepare("SELECT COUNT(S.name) as n
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name
+                                        WHERE Al.name = $album;");
+            $query2->execute();
+            $album_songs_number = $query2->fetchAll();
+            if ($user_songs_number != $album_songs_number) {
+                echo "ADD";
+            } else {
+                echo "ALREADY_EXIST";
             }
             break;
     }

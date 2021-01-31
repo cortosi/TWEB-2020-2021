@@ -11,7 +11,7 @@ try {
     if ($query->rowCount() > 0) {
         if ($results[0]['password'] == trim($password, '\'')) {
             session_start();
-            $_SESSION['username'] = $username;
+            $_SESSION['username'] = trim($username, '\'');
             echo "LOGGED";
         } else {
             echo "PSW_ERR";

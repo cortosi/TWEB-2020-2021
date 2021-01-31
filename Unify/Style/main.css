@@ -563,11 +563,11 @@ input[type="range"]:focus::-ms-fill-upper {
 
 .album_row_song {
     display: grid;
-    grid-template-columns: 40px repeat(2, calc((100% - 20px) / 2));
+    grid-template-columns: 40px repeat(2, calc((100% - 80px) / 2)) 40px;
     padding: 0 10px;
     height: 45px;
     border-top: 0.5px solid #4d4d4d;
-    grid-template-areas: "songnumber songname songtime";
+    grid-template-areas: "songnumber songname songtime songicon";
     cursor: pointer;
 }
 
@@ -602,7 +602,8 @@ input[type="range"]:focus::-ms-fill-upper {
 .row_song_songartist,
 .row_song_songalbum,
 .row_song_songtime,
-.row_song_songnumber {
+.row_song_songnumber,
+.row_song_songicon {
     display: flex;
     align-items: center;
     color: white;
@@ -1242,7 +1243,7 @@ input[type="range"]:focus::-ms-fill-upper {
 .explore_section_see_more {
     font-size: 14px;
     color: #bb1a04;
-    cursor: pointer;
+    cursor: initial;
 }
 
 .explore_albums_albums,
@@ -1307,7 +1308,8 @@ input[type="range"]:focus::-ms-fill-upper {
     border: 1px solid red;
 }
 
-.loader {
+.loader,
+.album_loader {
     border: 2px solid #bb1a04;
     border-radius: 50%;
     border-top: 2px solid white;
@@ -1317,6 +1319,12 @@ input[type="range"]:focus::-ms-fill-upper {
     /* Safari */
     animation: spin 2s linear infinite;
     margin-left: auto;
+}
+
+.album_loader {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
 }
 
 

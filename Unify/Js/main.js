@@ -88,42 +88,22 @@ function show_explore() {
     }).appendTo($explore_album_wrapp);
     $wrapper = $('<div>', { 'class': 'explore_albums_albums' }).appendTo($explore_album_wrapp);
     $.when($.getJSON("./php/ajax_requests.php", "username=" + username + "&type=explore_album",
-        function(json, textStatus, jqXHR) {
+        function(json) {
             json.albums.forEach(function(item) {
-                var $single_album = $('<div>', {
-                    'class': 'explore_albums_item',
-                    'prepend': $('<div>', {
-                        'class': 'explore_albums_ill',
-                        'html': $('<div>', {
-                            'class': 'explore_albums_ill_hover',
-                            'html': $('<div>', {
-                                'class': 'explore_albums_ill_buttons',
-                                'html': $('<div>', {
-                                    'class': 'explore_ill_play_bttn',
-                                }).click(function(e) {
-                                    e.stopPropagation();
-                                }),
-                                'append': $('<div>', {
-                                    'class': 'explore_ill_add_bttn',
-                                }).click(function(e) {
-                                    e.stopPropagation();
-                                }),
-                            })
-                        }).click(show_album)
-                    }).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" }),
-                    'append': $('<div>', {
-                        'class': 'album_det',
-                        'html': $('<p>', {
-                            'class': 'album_det_name',
-                            'html': item.album
-                        }),
-                        'append': $('<p>', {
-                            'class': 'album_det_artist_name',
-                            'html': item.artist
+                $single_album = $('<div>', { 'class': 'explore_albums_item' }).appendTo($wrapper);
+                $single_album_ill = $('<div>', { 'class': 'explore_albums_ill' })
+                    .css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" }).appendTo($single_album);
+                $single_album_ill_hover = $('<div>', { 'class': 'explore_albums_ill_hover' }).appendTo($single_album_ill);
+                $single_album_ill_buttons = $('<div>', { 'class': 'explore_albums_ill_buttons' }).appendTo($single_album_ill_hover);
+                $play_btn = $('<div>', { 'class': 'explore_ill_play_bttn' }).appendTo($single_album_ill_buttons);
+                if (album_already_owned(item.album) == "ADD") {
+                    $('<div>', { 'class': 'explore_ill_add_bttn' })
+                        .click(function() {
+                            add_album_to_library(item.album, this)
                         })
-                    })
-                }).appendTo($wrapper);
-            });
+                        .appendTo($single_album_ill_buttons);
+                }
+            })
         }
     )).then(function() {
         //BUILDING SONGS EXPLORE SECTION
@@ -141,7 +121,7 @@ function show_explore() {
         }).appendTo($explore_songs_wrapp);
         $wrapper = $('<div>', { 'class': 'explore_songs_songs' }).appendTo($explore_songs_wrapp);
         $.when($.getJSON("./php/ajax_requests.php", "username=" + username + "&type=explore_songs",
-            function(json, textStatus, jqXHR) {
+            function(json) {
                 json.songs.forEach(function(item) {
                     var $single_song = $('<div>', { 'class': 'row_song_songname' }).appendTo($wrapper);
                     $ill = $('<div>', {
@@ -156,19 +136,17 @@ function show_explore() {
                         'class': 'songname',
                         'html': item.name,
                     }).appendTo($single_song)
-                    song_already_owned(item.name).done(function(response) {
-                        if (response != "OK") {
-                            $song_add_icon = $('<div>', {
-                                'class': 'song_owned_icon'
-                            }).appendTo($single_song);
-                        } else {
-                            $song_add_icon = $('<div>', {
-                                'class': 'song_add_icon',
-                            }).click(function() {
-                                add_song_to_library(item.name, this);
-                            }).appendTo($single_song);
-                        }
-                    })
+                    if (song_already_owned(item.name) != "OK") {
+                        $song_add_icon = $('<div>', {
+                            'class': 'song_owned_icon'
+                        }).appendTo($single_song);
+                    } else {
+                        $song_add_icon = $('<div>', {
+                            'class': 'song_add_icon',
+                        }).click(function() {
+                            add_song_to_library(item.name, this);
+                        }).appendTo($single_song);
+                    }
                 });
             }
         )).then(function() {
@@ -292,11 +270,12 @@ function show_user_albums() {
                                     'class': 'ill_play_bttn',
                                 }).click(function(e) {
                                     e.stopPropagation();
-                                    play_album($(this).parents(".album_ill").next().children(".album_det_name").text(),
-                                        $(this).parents(".album_ill").next().children(".album_det_artist_name").text());
+                                    play_album(item.album, item.artist);
                                 })
                             })
-                        }).click(show_album)
+                        }).click(function() {
+                            show_album(item.album, item.artist);
+                        })
                     }).css({ "background": "url(\"./unify_media/" + item.artist + "/" + item.album + "/cover.jpg\") center/cover" }),
                     'append': $('<div>', {
                         'class': 'album_det',
@@ -395,16 +374,14 @@ function add_song_queue() {
     currentSong++;
 };
 
-function show_album() {
+function show_album($album, $artist, $all = "NULL") {
     $('.content').empty();
-    $alb_name = $(this).parents('.album').children('.album_det').children(".album_det_name").text();
-    $art_name = $(this).parents('.album').children('.album_det').children(".album_det_artist_name").text();
     $loaded = $('<div>', { 'class': 'loaded single_album_layout' });
     $('<div>', {
         'class': 'single_album_ill_wrapp',
         'html': $('<div>', {
             'class': 'single_album_ill'
-        }).css({ "background": "url(\"./unify_media/" + $art_name + "/" + $alb_name + "/cover.jpg\") center/cover" })
+        }).css({ "background": "url(\"./unify_media/" + $artist + "/" + $album + "/cover.jpg\") center/cover" })
     }).appendTo($loaded);
     $w1 = $('<div>', {
         'class': 'single_album_det_wrapp',
@@ -412,11 +389,11 @@ function show_album() {
             'class': 'single_album_det',
             'html': $('<div>', {
                 'class': 'single_album_artist',
-                'html': $art_name
+                'html': $artist
             }),
             'prepend': $('<div>', {
                 'class': 'single_album_name',
-                'html': $alb_name
+                'html': $album
             }),
             'append': $('<div>', {
                 'class': 'single_album_genre',
@@ -426,12 +403,12 @@ function show_album() {
     }).appendTo($loaded);
     $('<div>', { 'class': 'single_album_play_btn', 'html': 'Play' })
         .click(function() {
-            play_album($('.single_album_name').text(), $('.single_album_artist').text());
+            play_album($album, $artist, $all);
         })
         .appendTo($w1.children(".single_album_det"));
     var $wrapper = $('<div>', { 'class': 'single_album_songs songs_layout' });
-    $.getJSON("./php/ajax_requests.php", "username=" + username + "&type=album_songs&album=" + $alb_name,
-        function(json, textStatus, jqXHR) {
+    $.getJSON("./php/ajax_requests.php", "album_explore=" + $all + "&username=" + username + "&type=album_songs&album=" + $album,
+        function(json) {
             $i = 1;
             json.songs.forEach(function(item) {
                 var $single_row_song = $('<div>', {
@@ -444,13 +421,35 @@ function show_album() {
                         'class': 'row_song_songnumber',
                         'html': $i
                     }).click(function() {
-                        play_this(item.name, $art_name, $alb_name);
+                        play_this(item.name, $artist, $album);
                     }),
                     'append': $('<div>', {
                         'class': 'row_song_songtime',
                         'html': item.length
                     }),
                 });
+                if ($all == "SET") {
+                    song_already_owned(item.name).done(function(response) {
+                        if (response != "OK") {
+                            $('<div>', {
+                                'class': 'row_song_songicon',
+                                'html': $('<div>', {
+                                    'class': 'song_owned_icon'
+                                })
+                            }).appendTo($single_row_song);
+                        } else {
+                            $('<div>', {
+                                'class': 'row_song_songicon',
+                                'html': $('<div>', {
+                                    'class': 'song_add_icon',
+                                }).click(function(e) {
+                                    e.stopPropagation();
+                                    add_song_to_library(item.name, this);
+                                })
+                            }).appendTo($single_row_song);
+                        }
+                    })
+                }
                 $single_row_song.appendTo($wrapper);
                 $i++;
             });
@@ -460,30 +459,27 @@ function show_album() {
     $loaded.appendTo(".content");
 }
 
-function play_album($songalbum, $songartist) {
+function play_album($songalbum, $songartist, $all = "NULL") {
     play_pause();
     reset_queue();
-    $.getJSON("./php/ajax_requests.php", "username=" + username + "&type=album_songs&album=" + $songalbum,
-        function(json, textStatus, jqXHR) {
-            json.songs.forEach(function(item) {
-                queue.push({
-                    'name': item.name,
-                    'artist': $songartist,
-                    'album': $songalbum
-                });
+    $.getJSON("./php/ajax_requests.php", "album_explore=" + $all + "&username=" + username + "&type=album_songs&album=" + $songalbum, function(json) {
+        json.songs.forEach(function(item) {
+            queue.push({
+                'name': item.name,
+                'artist': $songartist,
+                'album': $songalbum
             });
-            play_next();
-        }
-    );
+        });
+        play_next();
+    });
 }
-
 
 function show_this_artist() {
     $('.artist_content').empty();
     $art_name = $(this).children('.artist_artist_name').text();
     $alb_name = "";
     $.getJSON("./php/ajax_requests.php", "username=" + username + "&artist=" + $art_name + "&type=album_artist_per_user",
-        function(json, textStatus, jqXHR) {
+        function(json) {
             json.albums.forEach(function(item) {
                 $alb_name = item.albumname
                 $album = $('<div>', {
@@ -543,8 +539,33 @@ function show_user_recent() {
 }
 
 function song_already_owned($songname) {
-    return $.get("./php/ajax_requests.php",
-        "username=" + username + "&songname=" + $songname + "&type=check_owned_song");
+    $result = "";
+    $.ajax({
+        type: "GET",
+        url: "./php/ajax_requests.php",
+        data: "username=" + username + "&songname=" + $songname + "&type=check_owned_song",
+        dataType: "text",
+        async: false,
+        success: function(response) {
+            $result = response;
+        }
+    });
+    return $result;
+}
+
+function album_already_owned($album) {
+    $result = "";
+    $.ajax({
+        type: "GET",
+        url: "./php/ajax_requests.php",
+        data: "username=" + username + "&album=" + $album + "&type=check_owned_album",
+        dataType: "text",
+        async: false,
+        success: function(response) {
+            $result = response;
+        }
+    });
+    return $result;
 }
 
 function fill_side_playlists() {
@@ -605,8 +626,7 @@ function add_to_playlist($songname, $pl_name) {
             } else {
 
             }
-        },
-        "text"
+        }
     )
 };
 
@@ -653,7 +673,7 @@ function show_this_pl() {
     }).appendTo('.content').append($pl_content);
     $pl_name = $(this).text();
     $.getJSON("./php/ajax_requests.php", "username=" + username + "&type=songs_into_pl&pl_name=" + $pl_name,
-        function(json, textStatus, jqXHR) {
+        function(json) {
             json.songs.forEach(function(item) {
                 var $single_row_song = $('<div>', { 'class': 'row_song' });
                 $('<div>', {
@@ -705,8 +725,23 @@ function add_song_to_library($songname, $div) {
                 } else {
                     $($div).removeClass('loader').addClass('song_add_icon');
                 }
-            },
-            "text"
+            }
+        );
+    }, 2000);
+}
+
+function add_album_to_library($album, $div) {
+    $($div).removeClass('explore_ill_add_bttn').addClass('album_loader');
+    setTimeout(() => {
+        console.log($album);
+        $.get("./php/ajax_requests.php", 'username=' + username + "&type=add_album_to_library&album=" + $album,
+            function(data) {
+                if (data == "ADDED") {
+                    $($div).removeClass('album_loader');
+                } else {
+                    $($div).removeClass('album_loader').addClass('explore_ill_add_bttn');
+                }
+            }
         );
     }, 2000);
 }

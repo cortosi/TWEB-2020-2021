@@ -14,10 +14,32 @@ $(".sign_butt").click(function() {
     });
 });
 
+$('.isnotreg').click(function() {
+    $(".login_panel").toggleClass("login_panel_open");
+    $(".login_butt").toggleClass("login_butt_up")
+    $(".login_butt").text("Login");
+    $(".signup_panel").toggleClass("signup_panel_open");
+    $(".sign_butt").toggleClass("sign_butt_up")
+    $(".sign_butt").text(function() {
+        return $(".sign_butt").text() == "Back" ? "Sign-Up" : "Back";
+    });
+})
+
+$('.alrdreg').click(function() {
+    $(".signup_panel").toggleClass("signup_panel_open");
+    $(".sign_butt").toggleClass("sign_butt_up")
+    $(".sign_butt").text("Sign-Up");
+    $(".login_panel").toggleClass("login_panel_open");
+    $(".login_butt").toggleClass("login_butt_up")
+    $(".login_butt").text(function() {
+        return $(".login_butt").text() == "Back" ? "Login" : "Back";
+    });
+})
+
 $('.login_form').submit(function() {
     $.get("./php/login.php", 'username=' + $('#login_username').val() +
         "&password=" + $('#login_password').val(),
-        function(data, textStatus, jqXHR) {
+        function(data) {
             switch (data) {
                 case 'PSW_ERR':
                     $('.login_error').addClass('error_show').text("Wrong Password");
@@ -30,7 +52,6 @@ $('.login_form').submit(function() {
                     break;
             }
         },
-        "text"
     );
 })
 
@@ -39,7 +60,7 @@ $('.signup_input_fields').submit(function() {
         "&email=" + $('#signup_email').val() +
         "&password=" + $('#signup_password').val() +
         "&gender=" + $(".signup_input_fields input[type='radio']:checked").val(),
-        function(data, textStatus, jqXHR) {
+        function(data) {
             switch (data) {
                 case 'USERNAME_EXIST':
                     $('.signup_error').addClass('error_show').text("Username Already Exist");
@@ -51,7 +72,5 @@ $('.signup_input_fields').submit(function() {
                     window.location = "./php/signup_success.php";
                     break;
             }
-        },
-        "text"
-    );
+        });
 })

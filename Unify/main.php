@@ -113,7 +113,56 @@ if (isset($_SESSION['username'])) {
                 </div>
             </div>
             <div class="content">
-
+                <div class="explore_albums">
+                    <div class="explore_section_head">
+                        <p class="expolore_title">Albums</p>
+                        <p class="explore_section_see_more">See More</p>
+                    </div>
+                    <div class="explore_albums_albums">
+                        <div class="explore_albums_item">
+                            <div class="explore_albums_ill" style="background: url(&quot;./unify_media/Coldplay/A Head Full Of Dreams/cover.jpg&quot;) center center / cover;">
+                                <div class="explore_albums_ill_hover">
+                                    <div class="explore_albums_ill_buttons">
+                                        <div class="explore_ill_play_bttn"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="album_det">
+                                <p class="album_det_name">A Head Full Of Dreams</p>
+                                <p class="album_det_artist_name">Coldplay</p>
+                            </div>
+                        </div>
+                        <div class="explore_albums_item">
+                            <div class="explore_albums_ill" style="background: url(&quot;./unify_media/Linkin Park/Living Things/cover.jpg&quot;) center center / cover;">
+                                <div class="explore_albums_ill_hover">
+                                    <div class="explore_albums_ill_buttons">
+                                        <div class="explore_ill_play_bttn"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="album_det">
+                                <p class="album_det_name">Living Things</p>
+                                <p class="album_det_artist_name">Linkin Park</p>
+                            </div>
+                        </div>
+                        <div class="explore_albums_item">
+                            <div class="explore_albums_ill" style="background: url(&quot;./unify_media/Avicii/The Days _Nights (EP)/cover.jpg&quot;) center center / cover;">
+                                <div class="explore_albums_ill_hover">
+                                    <div class="explore_albums_ill_buttons">
+                                        <div class="explore_ill_play_bttn"></div>
+                                        <div class="explore_ill_add_bttn"></div>
+                                        <div class="explore_ill_add_bttn"></div>
+                                        <div class="explore_ill_add_bttn"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="album_det">
+                                <p class="album_det_name">The Days _Nights (EP)</p>
+                                <p class="album_det_artist_name">Avicii</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="create_playlist_wrapp">
                 <div class="create_playlist">
