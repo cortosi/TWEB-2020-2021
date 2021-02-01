@@ -185,6 +185,13 @@
     background: url("../Imgs/shuffle.png") center/cover;
 }
 
+.shuffle_active {
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    background: url("../Imgs/shuffle_active.png") center/cover;
+}
+
 .playback_back_arrow_btn {
     background: url("../Imgs/backarrow.png") center/cover;
 }
@@ -542,7 +549,7 @@ input[type="range"]:focus::-ms-fill-upper {
 .library_header,
 .row_song {
     display: grid;
-    grid-template-columns: repeat(3, calc((90%) / 3)) 1fr;
+    grid-template-columns: repeat(3, calc((90%) / 3)) 1fr 1fr;
     padding: 0 30px;
 }
 
@@ -558,7 +565,7 @@ input[type="range"]:focus::-ms-fill-upper {
 .row_song {
     height: 45px;
     border-top: 0.5px solid #4d4d4d;
-    grid-template-areas: "songname songartist songalbum songtime";
+    grid-template-areas: "songname songartist songalbum songtime songicon";
 }
 
 .album_row_song {
@@ -741,7 +748,7 @@ input[type="range"]:focus::-ms-fill-upper {
 
 .album_layout {
     display: grid;
-    grid-template-columns: repeat(6, minmax(245px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(249px, 1fr));
     grid-template-rows: auto 1fr;
     padding: 20px 20px;
     grid-gap: 20px;
@@ -778,6 +785,7 @@ input[type="range"]:focus::-ms-fill-upper {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .ill_play_bttn,
@@ -1230,7 +1238,7 @@ input[type="range"]:focus::-ms-fill-upper {
 
 .explore_layout {
     display: grid;
-    grid-template-rows: repeat(3, calc(100% / 3));
+    grid-template-rows: repeat(3, minmax(250px, calc(100% / 3)));
     grid-template-areas: "explore_albums" "explore_songs" "explore_artists";
 }
 
@@ -1246,7 +1254,7 @@ input[type="range"]:focus::-ms-fill-upper {
 .explore_section_see_more {
     font-size: 14px;
     color: #bb1a04;
-    cursor: initial;
+    cursor: pointer;
 }
 
 .explore_albums_albums,

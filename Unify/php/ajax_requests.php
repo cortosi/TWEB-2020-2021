@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             echo "\n]\n}";
             break;
         case 'explore_album':
+            $max_album = 8;
             $rows = $db->prepare("SELECT DISTINCT albums.name as album, artists.name as artist
                                         FROM songs
                                         JOIN songs_albums ON(songs.id = songs_albums.song_id)
@@ -35,26 +36,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             $rows->execute();
             $result = $rows->fetchAll();
             echo  "{\n\"albums\":[\n";
-            for ($i = 0; $i < $rows->rowCount(); $i++) {
+            for ($i = 0; $i < $max_album; $i++) {
                 echo "{\"album\":\"" . $result[$i]['album'] . "\",
                                 \n\"artist\":\"" . $result[$i]['artist'] . "\"
                         }";
-                if ($i != $rows->rowCount() - 1) {
+                if ($i != $max_album - 1) {
                     echo ",\n";
                 }
             }
             echo "\n]\n}";
             break;
-        case 'user_songs':
+        case 'song_list':
             $username = $db->quote($_GET['username']);
-            $rows = $db->prepare("SELECT S.name songname,Al.name as albname,Ar.name as artname, S.length as length
-                                    FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
-                                    JOIN albums Al ON SA.album_id=Al.id
-                                    JOIN artists_albums ArAl ON Al.id=ArAl.album_id
-                                    JOIN artists Ar ON ArAl.artist_name=Ar.name
-                                    WHERE S.id IN (SELECT song_id 
-                                                    FROM user_songs 
-                                                    WHERE user_songs.username = $username);");
+            if (isset($_GET['song_explore']) && $_GET['song_explore'] != "NULL") {
+                $rows = $db->prepare("SELECT S.name songname,Al.name as albname,Ar.name as artname, S.length as length
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name;");
+            } else {
+                $rows = $db->prepare("SELECT S.name songname,Al.name as albname,Ar.name as artname, S.length as length
+                                        FROM songs S JOIN songs_albums SA ON S.id = SA.song_id
+                                        JOIN albums Al ON SA.album_id=Al.id
+                                        JOIN artists_albums ArAl ON Al.id=ArAl.album_id
+                                        JOIN artists Ar ON ArAl.artist_name=Ar.name
+                                        WHERE S.id IN (SELECT song_id 
+                                                        FROM user_songs 
+                                                        WHERE user_songs.username = $username);");
+            }
             $rows->execute();
             $result = $rows->fetchAll();
             echo  "{\n\"songs\":[\n";
@@ -70,9 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             }
             echo "\n]\n}";
             break;
-        case 'user_albums':
+        case 'album_list':
             $username = $db->quote($_GET['username']);
-            $rows = $db->prepare("SELECT DISTINCT albums.name as album, artists.name as artist
+            if (isset($_GET['albums_explore']) && $_GET['albums_explore'] != "NULL") {
+                $rows = $db->prepare("SELECT albums.name as album, artists.name as artist
+                FROM albums
+                JOIN artists_albums ON(artists_albums.album_id = albums.id)
+                JOIN artists ON(artists.name = artists_albums.artist_name);");
+            } else {
+                $rows = $db->prepare("SELECT DISTINCT albums.name as album, artists.name as artist
                                         FROM songs
                                         JOIN songs_albums ON(songs.id = songs_albums.song_id)
                                         JOIN artists_albums ON(artists_albums.album_id = songs_albums.album_id)
@@ -81,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
                                         WHERE songs.id IN (SELECT song_id 
                                                         FROM user_songs 
                                                         WHERE user_songs.username = $username);");
+            }
             $rows->execute();
             $result = $rows->fetchAll();
             echo  "{\n\"albums\":[\n";
@@ -184,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             $count_query->execute();
             $rows->execute();
             $result = $rows->fetchAll();
-            $nsongs = $count_query -> fetchAll();
+            $nsongs = $count_query->fetchAll();
             echo  "{\n\"nsongs\":" . $nsongs[0]['nsongs'] . ",\n\"songs\":[\n";
             for ($i = 0; $i < $rows->rowCount(); $i++) {
                 echo "{\"name\":\"" . $result[$i]['name'] . "\",
@@ -358,6 +374,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             } else {
                 echo "ALREADY_EXIST";
             }
+            break;
+        case 'remove_from_library':
+
             break;
     }
 } else {

@@ -151,8 +151,7 @@ if (isset($_SESSION['username'])) {
                                     <div class="explore_albums_ill_buttons">
                                         <div class="explore_ill_play_bttn"></div>
                                         <div class="explore_ill_add_bttn"></div>
-                                        <div class="explore_ill_add_bttn"></div>
-                                        <div class="explore_ill_add_bttn"></div>
+                        
                                     </div>
                                 </div>
                             </div>
