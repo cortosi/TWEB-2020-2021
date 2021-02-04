@@ -821,7 +821,15 @@ function add_album_to_library($album, $div) {
 }
 
 function remove_this_from_library($songname) {
-
+    $.get("./php/ajax_requests.php", "type=remove_from_library&username=" + username + "&songname=" + $songname,
+        function(data) {
+            if (data == "REMOVED") {
+                show_song_list();
+            } else {
+                console.log(data);
+            }
+        }
+    );
 }
 
 //PLAYBACK HANDLING

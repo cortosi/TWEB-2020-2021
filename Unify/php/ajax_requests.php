@@ -377,7 +377,19 @@ if (isset($_SESSION['username']) && $_SERVER['REQUEST_METHOD'] == 'GET' && isset
             }
             break;
         case 'remove_from_library':
-
+            $username = $db->quote($_GET['username']);
+            $songname = $db->quote($_GET['songname']);
+            try {
+                $query = $db->prepare("DELETE 
+                                     FROM user_songs 
+                                     WHERE user_songs.username = $username AND user_songs.song_id = (SELECT songs.id 
+                                                                                                        FROM songs
+                                                                                                        WHERE songs.name = $songname)");
+                $query -> execute();
+                echo "REMOVED";
+            } catch (Exception $e) {
+                echo "ERRROR: " + $e->getMessage();
+            }
             break;
     }
 } else {
