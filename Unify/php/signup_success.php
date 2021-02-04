@@ -25,7 +25,7 @@
     </div>
     <script>
         setTimeout(function() {
-            window.location =  "../index.html";
+            window.location =  "../index.php";
         }, 4000);
     </script>
 </body>
