@@ -10,7 +10,8 @@ if (isset($_SESSION['username'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./Style/main.css">
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-        <title>Document</title>
+        <link rel="icon" href="./Imgs/logo.png">
+        <title>Unify</title>
     </head>
 
     <body>
