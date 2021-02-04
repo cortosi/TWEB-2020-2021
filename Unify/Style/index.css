@@ -93,10 +93,24 @@ html {
 .intro {
     font-size: 40px;
     text-align: center;
-    bottom: 100px;
-    animation-name: intro-in;
+    animation-name: fade-in;
     animation-duration: 3s;
     animation-fill-mode: forwards;
+    line-height: 70px;
+}
+
+.cit {
+    opacity: 0;
+    font-size: 14px;
+    font-style: italic;
+    transform: translateY(30vh);
+    animation-name: fade-in;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+}
+
+.cit_name {
+    transform: translateY(32vh);
 }
 
 
@@ -113,7 +127,7 @@ html {
 }
 
 .login_panel_open {
-    clip-path: circle(2048px at 72% 5vh);
+    clip-path: circle(2048px);
 }
 
 .login_butt_up,
@@ -221,7 +235,7 @@ html {
 }
 
 .signup_panel_open {
-    clip-path: circle(2048px at 77% 5vh);
+    clip-path: circle(2048px);
 }
 
 .signup_input_fields input {
@@ -291,6 +305,10 @@ input[type="radio"]:checked {
         min-height: 100px;
     }
     .intro {
-        font-size: 25px;
+        font-size: 20px;
+    }
+    .cit,
+    .cit_name {
+        display: none;
     }
 }

@@ -50,6 +50,8 @@ $('.login_form').submit(function() {
                 case 'LOGGED':
                     window.location = "./main.php";
                     break;
+                default:
+                    $('.signup_error').addClass('error_show').text(data);
             }
         },
     );
@@ -71,6 +73,8 @@ $('.signup_input_fields').submit(function() {
                 case 'REGISTERED':
                     window.location = "./php/signup_success.php";
                     break;
+                default:
+                    $('.signup_error').addClass('error_show').text(data);
             }
         });
 })

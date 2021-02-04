@@ -212,6 +212,13 @@
     background: url("../Imgs/repeat.png") center/cover;
 }
 
+.repeat_active {
+    cursor: pointer;
+    width: 30px;
+    height: 22px;
+    background: url("../Imgs/repeat_active.png") center/cover;
+}
+
 .playback_wrapp,
 .controls_wrapp {
     display: flex;
@@ -510,12 +517,6 @@ input[type="range"]:focus::-ms-fill-lower {
 
 input[type="range"]:focus::-ms-fill-upper {
     background: #595959;
-}
-
-@supports (-ms-ime-align: auto) {
-    input[type="range"] {
-        margin: 0;
-    }
 }
 
 
@@ -1069,6 +1070,7 @@ input[type="range"]:focus::-ms-fill-upper {
 
 .show_flex {
     display: flex;
+    z-index: 100;
 }
 
 .hide {

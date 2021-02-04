@@ -1,6 +1,7 @@
 <?php
 @include './connection.php';
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
+session_start();
+if (isset($_SESSION['username']) && $_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
     switch ($_GET['type']) {
         case 'explore_songs':
             $max_songs = 18;
@@ -26,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['type'])) {
             echo "\n]\n}";
             break;
         case 'explore_album':
-            $max_album = 8;
+            $max_album = 5;
             $rows = $db->prepare("SELECT DISTINCT albums.name as album, artists.name as artist
                                         FROM songs
                                         JOIN songs_albums ON(songs.id = songs_albums.song_id)
